@@ -1,0 +1,77 @@
+# Dependencies, caches, generated builds and test outputs
+node_modules/
+.npm-cache/
+.studio-tools/
+.studio/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+dist/
+.next/
+.vinext/
+.wrangler/
+.test-build/
+coverage/
+*.tsbuildinfo
+*.log
+*.har
+*.db
+*.sqlite
+*.sqlite3
+
+# Credentials and local environment; publish only sanitized templates
+.env*
+!.env.example
+.dev.vars*
+*.pem
+*.key
+*.p12
+*.pfx
+.aws/
+.ssh/
+.npmrc
+.netrc
+
+# Account-specific hosting state and local tooling
+.openai/
+.vercel/
+.codex/
+.agents/
+.visual-review/
+.local-publication/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Archives and local media-production work
+*.tgz
+*.tar.gz
+*.zip
+*.bak
+/ARC-Raiders-Inspired-Prototype-Article.md
+/docs/verification/
+/docs/sa-content-studio/*
+!/docs/sa-content-studio/content/
+/docs/sa-content-studio/content/*
+!/docs/sa-content-studio/content/article.md
+!/docs/sa-content-studio/content/battle-pass-tutorial.md
+!/docs/sa-content-studio/content/statistics.png
+!/docs/sa-content-studio/content/purchase-req-t2.png
+!/docs/sa-content-studio/content/purchase-req-t3.png
+!/docs/sa-content-studio/content/guide-images/
+/docs/sa-content-studio/content/guide-images/*
+!/docs/sa-content-studio/content/guide-images/*.jpg
+!/docs/sa-content-studio/content/guide-images/*.png
+
+# Operator scripts use live fixtures and private deployment access
+/scripts/assert-live-evidence.mjs
+/scripts/read-deck-evidence.ps1
+/scripts/test-approved-purchases.ps1
+/scripts/test-orders-only.ps1
+/scripts/test-projection-repair.ps1
+/scripts/verify-hosted-auto-player.mjs
+
+# Local video reference frames and isolated verification output
+/output/

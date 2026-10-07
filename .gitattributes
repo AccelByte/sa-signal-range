@@ -1,0 +1,4 @@
+# Keep generated HTML reproducible and review fingerprints stable across checkouts.
+/battle-pass-tutorial.html text eol=lf
+/scripts/build-battle-pass-tutorial.py text eol=lf
+/docs/sa-content-studio/content/battle-pass-tutorial.md text eol=lf

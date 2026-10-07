@@ -1,0 +1,6 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": { "noEmit": false, "incremental": false, "outDir": ".test-build", "module": "NodeNext", "moduleResolution": "NodeNext", "types": ["node"] },
+  "include": ["lib/deck.ts", "lib/mock-deck-client.ts", "lib/order-spending.ts", "lib/ags-deck-client.ts", "lib/player-identity.ts"],
+  "exclude": ["node_modules", ".test-build"]
+}
