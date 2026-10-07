@@ -120,7 +120,7 @@ For AGS Shared Cloud, configure these permission groups:
 
 These are runtime permissions; catalog and statistic configuration use your authorized setup/admin access separately. The purchase reconciler does not need a separate permission to debit wallets or grant rewards: the player order performs the purchase.
 
-Confirm the required operations and available permission groups in your own environment. Private Cloud deployments can use resource/action permissions instead of this grouped representation. See the [current implementation README](../../../sites/signal-range/README.md).
+Confirm the required operations and available permission groups in your own environment. Private Cloud deployments can use resource/action permissions instead of this grouped representation. See the [current implementation README](../../../prototype/README.md).
 
 ## 4. Configure the economy and tier requirements
 
@@ -304,7 +304,7 @@ Display “available,” “spent,” and “owned” separately. When spending 
 
 The example uses a narrow same-origin player bridge to avoid depending on a direct browser-to-AGS Commerce CORS configuration. That bridge verifies the player, allowlists supported paths and request bodies, and forwards with the player's token. It is specific to this deployment; a client with correctly configured direct AGS access can use the equivalent player API calls.
 
-Source: [AGS client adapter](../../../sites/signal-range/lib/ags-deck-client.ts) and [player bridge](../../../sites/signal-range/app/api/deck/player/route.ts).
+Source: [AGS client adapter](../../../prototype/lib/ags-deck-client.ts) and [player bridge](../../../prototype/app/api/deck/player/route.ts).
 
 ### Navigate the reward deck
 
@@ -442,7 +442,7 @@ export async function reconcileOrders(userId: string, season: Season, orders: Or
 }
 ```
 
-`receipt` is the full validator in [order-spending.ts](../../../sites/signal-range/lib/order-spending.ts). `SpendingPort` is the prototype's own interface, not an AGS SDK class.
+`receipt` is the full validator in [order-spending.ts](../../../prototype/lib/order-spending.ts). `SpendingPort` is the prototype's own interface, not an AGS SDK class.
 
 The order-number map counts a repeated snapshot once. Conflicting snapshots are rejected. A second fulfilled order for the same one-time item is also rejected rather than silently treated as another valid purchase.
 
@@ -571,30 +571,30 @@ The reusable design is the separation of responsibilities: AGS processes and val
 
 ## 12. Explore the implementation
 
-Use `sites/signal-range/` for automatic login and starter grants. The `prototype/` variant uses manual Device ID login and operator funding.
+Use `prototype/` for the current UI, automatic login, and starter grants. The GitHub Pages build uses the same UI with local demo state. Select **Tutorial** in the demo to read this guide, or **Live AGS** to open the server-backed game.
 
 | Start here | Purpose |
 | --- | --- |
-| [Current README](../../../sites/signal-range/README.md) | Runtime configuration, starter-grant behavior, and local setup |
-| [Page controller](../../../sites/signal-range/app/page.tsx) | Mode, connection, purchases, and progress state |
-| [Deck view](../../../sites/signal-range/components/deck-view.tsx) | Tier tabs, Collection, reward details, and confirmation controls |
-| [Outpost styles](../../../sites/signal-range/app/outpost.css) | Refreshed layout and responsive presentation |
-| [Runtime artwork](../../../sites/signal-range/public/art/signal-range/) | Outpost backdrop, scout, and equipment atlas |
-| [Deck definitions](../../../sites/signal-range/lib/deck.ts) | Rewards, prices, and tier thresholds; also contains separately used mock helpers |
-| [Public AGS mapping](../../../sites/signal-range/lib/ags-deck-config.ts) | Environment and catalog item mapping |
-| [Trusted deck configuration](../../../sites/signal-range/lib/server/deck-config.ts) | Original deck membership used for attribution |
-| [Live client adapter](../../../sites/signal-range/lib/ags-deck-client.ts) | Authoritative reads, purchases, and unresolved-request handling |
-| [Order validation and accounting](../../../sites/signal-range/lib/order-spending.ts) | Validated receipts, pagination, deduplication, and total computation |
-| [Backend reconciler](../../../sites/signal-range/lib/server/reconcile-deck.ts) | Order-history queries and Statistics MAX publication |
-| [Identity verification](../../../sites/signal-range/lib/server/identity.ts) | Verification of protected player requests |
-| [Starter-grant coordinator](../../../sites/signal-range/lib/starter-grant.ts) | Separate funding reservation/recovery logic |
+| [Current README](../../../prototype/README.md) | Runtime configuration, starter-grant behavior, and local setup |
+| [Page controller](../../../prototype/app/page.tsx) | Mode, connection, purchases, and progress state |
+| [Deck view](../../../prototype/components/deck-view.tsx) | Tier tabs, Collection, reward details, and confirmation controls |
+| [Outpost styles](../../../prototype/app/outpost.css) | Refreshed layout and responsive presentation |
+| [Runtime artwork](../../../prototype/public/art/signal-range/) | Outpost backdrop, scout, and equipment atlas |
+| [Deck definitions](../../../prototype/lib/deck.ts) | Rewards, prices, and tier thresholds; also contains separately used mock helpers |
+| [Public AGS mapping](../../../prototype/lib/ags-deck-config.ts) | Environment and catalog item mapping |
+| [Trusted deck configuration](../../../prototype/lib/server/deck-config.ts) | Original deck membership used for attribution |
+| [Live client adapter](../../../prototype/lib/ags-deck-client.ts) | Authoritative reads, purchases, and unresolved-request handling |
+| [Order validation and accounting](../../../prototype/lib/order-spending.ts) | Validated receipts, pagination, deduplication, and total computation |
+| [Backend reconciler](../../../prototype/lib/server/reconcile-deck.ts) | Order-history queries and Statistics MAX publication |
+| [Identity verification](../../../prototype/lib/server/identity.ts) | Verification of protected player requests |
+| [Starter-grant coordinator](../../../prototype/lib/starter-grant.ts) | Separate funding reservation/recovery logic |
 
 For a local reproduction, copy `.env.example` to `.env.local` and fill in your own namespace, public client ID, and nine `NEXT_PUBLIC_AGS_ITEM_*` values. The public values are embedded at build time; rebuild after changing them. Defaults in the source are synthetic and use a non-routable example host. Put `AGS_BASE_URL`, `AGS_NAMESPACE`, `AGS_WORKER_CLIENT_ID`, and `AGS_WORKER_CLIENT_SECRET` in server settings. If retaining automatic funding, configure its D1 binding/migrations as described in the README and optionally set `AGS_STARTER_POINTS`.
 
 After runtime configuration, the project checks are:
 
 ```sh
-cd sites/signal-range
+cd prototype
 npm ci
 npm test
 npm run typecheck
@@ -609,4 +609,4 @@ For your target engine or another backend language, use the equivalent documente
 
 Ready to try the same pattern in your game? Register for AGS, create a test namespace, and start with a points wallet, a small reward catalog, and spending-based purchase requirements.
 
-**[Register for AccelByte Gaming Services](https://prod.gamingservices.accelbyte.io/auth/register?utm_source=github&utm_medium=source-code&utm_campaign=sa-content&utm_content=2026-10-06-choice-based-battle-pass-tutorial)**
+**[Register for AccelByte Gaming Services](https://prod.gamingservices.accelbyte.io/auth/register?utm_source=github&utm_medium=source-code&utm_campaign=sa-content&utm_content=choice-based-battle-pass-tutorial)**

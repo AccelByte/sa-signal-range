@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: 'Signal Range — Equipment Deck',
-  description: 'An original three-tier equipment reward deck. Mock prototype with local demo points; no live AGS connection.',
+  description: 'A three-tier equipment reward deck with automatic player login and starter points. Choose rewards to unlock every tier.',
 };
 
 export default function RootLayout({

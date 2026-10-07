@@ -1,5 +1,6 @@
 import { AGS, DECK_ITEMS } from './ags-deck-config.js';
 import { REWARDS, TIERS, type Reward } from './deck.js';
+import { automaticDeviceId } from './auto-player.js';
 
 type Identity = { userId: string; namespace: string; clientId: string };
 type Session = Identity & { token: string };
@@ -21,7 +22,7 @@ class AgsError extends Error {
 async function json<T>(url: string, init: RequestInit, label: string): Promise<T> {
   let response: Response;
   try {
-    response = await fetch(url, { ...init, credentials: url.startsWith('/api/deck/') ? 'same-origin' : 'omit', cache: 'no-store', redirect: 'error', signal: AbortSignal.timeout(url === '/api/deck/reconcile' ? 45000 : 12000) });
+    response = await fetch(url, { ...init, credentials: url.startsWith('/api/deck/') ? 'same-origin' : 'omit', cache: 'no-store', redirect: 'error', signal: AbortSignal.timeout(url === '/api/deck/reconcile' || url === '/api/deck/bootstrap' ? 45000 : 25000) });
   } catch { throw new AgsError(`${label}: network error or timeout. The outcome may be unknown.`); }
   if (!response.ok) {
     // Never echo upstream payloads: IAM payloads may include tokens or private data.
@@ -39,6 +40,7 @@ export function createAgsDeckClient() {
   let outstanding: { rewardId: string; orderNo?: string } | null = null;
   let submitting = false;
   let pendingItems: string[] = [];
+  let automaticConnection: Promise<LiveDeck> | null = null;
   const guardKey = (s: Session) => `raiderdeck-submission:${s.namespace}:${s.userId}`;
   function saveGuard(s: Session, next: typeof outstanding) {
     current(s);
@@ -56,7 +58,7 @@ export function createAgsDeckClient() {
     if (session !== expected) throw new Error('Player changed. Discarded the previous response.');
   }
   function request<T>(s: Session, path: string, label: string, body?: object) {
-    return json<T>(`${AGS.baseUrl}${path}`, {
+    return json<T>(`/api/deck/player?path=${encodeURIComponent(path)}`, {
       method: body ? 'POST' : 'GET',
       headers: { Authorization: `Bearer ${s.token}`, ...(body ? { 'Content-Type': 'application/json' } : {}) },
       ...(body ? { body: JSON.stringify(body) } : {}),
@@ -136,20 +138,28 @@ export function createAgsDeckClient() {
     // Even FULFILLED requires a separate state refresh before allowing another buy.
     return order!;
   }
-  return {
+  const client = {
+    connectAutomatically(): Promise<LiveDeck> {
+      if (!automaticConnection) {
+        const connecting = Promise.resolve().then(() => client.connect(automaticDeviceId())).finally(() => { if (automaticConnection === connecting) automaticConnection = null; });
+        automaticConnection = connecting;
+      }
+      return automaticConnection;
+    },
     async connect(deviceId: string) {
       if (!deviceId.trim() || deviceId.length > 128) throw new Error('Enter a test Device ID (1–128 characters).');
       const attempt = ++generation;
       session = null; snapshot = null; outstanding = null; pendingItems = []; submitting = false;
-      const token = await json<{ access_token: string }>(`${AGS.baseUrl}/iam/v3/oauth/platforms/device/token`, {
-        method: 'POST', headers: { Authorization: `Basic ${btoa(`${AGS.publicClientId}:`)}`, 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({ client_id: AGS.publicClientId, device_id: deviceId.trim(), create_headless: 'true', skip_set_cookie: 'true' }),
+      const token = await json<{ access_token: string }>('/api/deck/login', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ deviceId: deviceId.trim() }),
       }, 'Device ID login');
       if (!token.access_token || typeof token.access_token !== 'string') throw new Error('Login returned no player token.');
       const identity = await json<Identity>('/api/deck/identity', { headers: { Authorization: `Bearer ${token.access_token}` } }, 'Verify player');
       if (attempt !== generation) throw new Error('Connection cancelled.');
       if (!identity.userId || identity.namespace !== AGS.namespace || identity.clientId !== AGS.publicClientId) throw new Error('Unexpected verified identity.');
       session = { ...identity, token: token.access_token };
+      const connectedSession = session;
       try {
         const saved = localStorage.getItem(guardKey(session));
         if (saved) {
@@ -157,10 +167,14 @@ export function createAgsDeckClient() {
           if (!value || !Object.hasOwn(DECK_ITEMS, value.rewardId) || (value.orderNo !== undefined && (typeof value.orderNo !== 'string' || !/^[A-Za-z0-9_-]{1,100}$/.test(value.orderNo)))) throw new Error('Invalid unresolved-purchase marker. Operator review is required.');
           outstanding = { rewardId: value.rewardId, orderNo: value.orderNo };
         }
+        await json<{ starterPoints: number }>('/api/deck/bootstrap', {
+          method: 'POST', headers: { Authorization: `Bearer ${token.access_token}`, 'Content-Type': 'application/json' }, body: '{}',
+        }, 'Prepare starter points');
+        current(connectedSession);
         return await reconcile();
       } catch (error) { if (attempt === generation) { session = null; snapshot = null; } throw error; }
     },
-    disconnect() { generation++; session = null; snapshot = null; outstanding = null; pendingItems = []; submitting = false; },
+    disconnect() { generation++; session = null; snapshot = null; outstanding = null; pendingItems = []; submitting = false; automaticConnection = null; },
     load: reconcile,
     async purchase(rewardId: string) {
       const s = requireSession();
@@ -173,7 +187,7 @@ export function createAgsDeckClient() {
       const reward = snapshot?.rewards.find((r) => r.id === rewardId);
       if (!reward || snapshot!.owned.includes(rewardId)) throw new Error('Refresh the catalog and ownership before purchasing.');
       if (snapshot!.spent < TIERS[reward.tier - 1].threshold) throw new Error('Spend more points to access this tier.');
-      if (snapshot!.balance < reward.cost) throw new Error(`Insufficient ${AGS.currency}. Test funding is an operator action.`);
+      if (snapshot!.balance < reward.cost) throw new Error(`Insufficient ${AGS.currency}. Retry connection to check starter points.`);
       saveGuard(s, { rewardId });
       try {
         const created = await request<LiveOrder>(s, `${platform}/users/${encodeURIComponent(s.userId)}/orders`, 'Create order', {
@@ -195,4 +209,5 @@ export function createAgsDeckClient() {
     pending() { return outstanding !== null || pendingItems.length > 0; },
     async refreshAfterOrder(_order: LiveOrder) { return reconcile(); },
   };
+  return client;
 }

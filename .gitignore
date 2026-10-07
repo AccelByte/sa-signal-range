@@ -8,6 +8,7 @@ __pycache__/
 .venv/
 venv/
 dist/
+dist-pages/
 .next/
 .vinext/
 .wrangler/
@@ -75,3 +76,6 @@ Thumbs.db
 
 # Local video reference frames and isolated verification output
 /output/
+
+# Preserved local deployment checkout; public app source lives in prototype/
+/sites/

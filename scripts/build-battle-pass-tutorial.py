@@ -254,7 +254,7 @@ def build() -> None:
   <a class="skip-link" href="#tutorial">Skip to tutorial</a>
   <header class="site-header"><div class="header-inner">
     <a class="brand" href="#top">ACCELBYTE<small>DEVELOPER TUTORIALS</small></a>
-    <div class="header-actions"><a href="{root_url(SOURCE.name)}">Markdown source</a><button class="plain-button" type="button" data-print hidden>Print / PDF</button></div>
+    <div class="header-actions"><a href="https://accelbyte.github.io/sa-signal-range/">Play demo</a><a href="{root_url(SOURCE.name)}">Markdown source</a><button class="plain-button" type="button" data-print hidden>Print / PDF</button></div>
   </div></header>
   <div class="layout">
     <aside class="sidebar" aria-label="Tutorial navigation">

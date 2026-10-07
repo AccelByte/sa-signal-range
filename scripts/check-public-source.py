@@ -10,6 +10,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 
+# Explicitly approved public game link; other hosting metadata stays excluded.
+PUBLIC_HOSTS = {'signal-range-deck.workspace-025025.chatgpt.site'}
+
 def git(*args: str, data: bytes | None = None) -> bytes:
     return subprocess.check_output(['git', '-c', 'core.excludesFile=', *args], cwd=ROOT, input=data)
 
@@ -43,6 +46,7 @@ def scan(paths: list[str]) -> list[str]:
         text = data.decode('utf-8', errors='replace')
         for kind, pattern in RULES.items():
             for match in pattern.finditer(text):
+                if kind == 'private hosting metadata' and match[0] in PUBLIC_HOSTS: continue
                 if kind == 'non-synthetic deployment/player ID' and (len(set(match[0])) == 1 or re.fullmatch(r'0{31}[1-9]', match[0])): continue
                 if kind == 'credential literal' and (match[1].startswith(('replace-with-', 'fake-', 'example-')) or '${' in match[1]): continue
                 if kind == 'credential environment value' and (not match[1].strip() or match[1].strip().startswith(('replace-with-', 'fake-', 'example-', '${'))): continue

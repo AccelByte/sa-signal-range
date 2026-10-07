@@ -1,0 +1,5 @@
+/* Portable font stacks for the static build, independent of next/font. */
+:root {
+  --font-geist-sans: Arial, Helvetica, sans-serif;
+  --font-geist-mono: 'Cascadia Code', Consolas, monospace;
+}

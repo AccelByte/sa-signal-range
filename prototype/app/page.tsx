@@ -14,13 +14,12 @@ export default function Home() {
   const [mode, setMode] = useState<'live' | 'mock'>('live');
   const [liveClient] = useState(() => createAgsDeckClient());
   const [live, setLive] = useState<LiveDeck | null>(null);
-  const [deviceId, setDeviceId] = useState('');
   const [busy, setBusy] = useState(false);
   const recovery = useRef({ mode, live, busy, refresh: refreshLive });
   recovery.current = { mode, live, busy, refresh: refreshLive };
   const deck = mode === 'mock' ? mockDeck : { ...mockDeck, balance: live?.balance ?? 0, spent: live?.spent ?? 0, owned: live?.owned ?? [], pending: null };
   const [selected, setSelected] = useState<Reward | null>(null);
-  const [message, setMessage] = useState('Connect your AGS test player.');
+  const [message, setMessage] = useState('Connecting your player and preparing starter points…');
   const [resetOpen, setResetOpen] = useState(false);
   const operation = useRef(0);
   const [ready, setReady] = useState(false);
@@ -41,6 +40,18 @@ export default function Home() {
     });
     return () => { active = false; };
   }, [client]);
+  useEffect(() => {
+    if (mode !== 'live') return;
+    let active = true;
+    const attempt = ++operation.current;
+    setBusy(true); setLive(null); setMessage('Connecting your player and preparing starter points…');
+    void liveClient.connectAutomatically().then(state => {
+      if (active && attempt === operation.current) { setLive(state); setMessage('Ready. Choose a reward; spending opens the next tier.'); }
+    }).catch(error => {
+      if (active && attempt === operation.current) setMessage(error instanceof Error ? error.message : 'Connection failed.');
+    }).finally(() => { if (active && attempt === operation.current) setBusy(false); });
+    return () => { active = false; };
+  }, [liveClient, mode]);
   useEffect(() => mode === 'mock' ? registerDeckTools({ read: () => ({ ...client.loadState(), rewards: REWARDS, tiers: TIERS }), earn: () => actions.current.earn(), purchase: (id) => actions.current.purchase(id), reset: () => actions.current.reset() }) : undefined, [client, mode]);
   useEffect(() => {
     const recover = () => { const r = recovery.current; if (r.mode === 'live' && r.live && !r.busy && document.visibilityState === 'visible') void r.refresh(); };
@@ -48,7 +59,7 @@ export default function Home() {
     return () => { window.removeEventListener('online', recover); window.removeEventListener('focus', recover); document.removeEventListener('visibilitychange', recover); };
   }, []);
   const rewards = mode === 'live' && live ? live.rewards : REWARDS;
-  const selectedIssue = selected ? mode === 'mock' ? purchaseIssue(deck, selected) : busy || liveClient.pending() ? 'Checking your purchase. Please wait or retry progress.' : deck.owned.includes(selected.id) ? 'Already in your collection.' : deck.spent < TIERS[selected.tier - 1].threshold ? `Spend ${TIERS[selected.tier - 1].threshold - deck.spent} more points to unlock.` : deck.balance < selected.cost ? 'Insufficient points. Test funding is an operator action.' : null : null;
+  const selectedIssue = selected ? mode === 'mock' ? purchaseIssue(deck, selected) : busy || liveClient.pending() ? 'Checking your purchase. Please wait or retry progress.' : deck.owned.includes(selected.id) ? 'Already in your collection.' : deck.spent < TIERS[selected.tier - 1].threshold ? `Spend ${TIERS[selected.tier - 1].threshold - deck.spent} more points to unlock.` : deck.balance < selected.cost ? 'Insufficient points.' : null : null;
 
   function earn() {
     if (mode !== 'mock') throw new Error('Mock funding is unavailable in live mode.');
@@ -109,12 +120,13 @@ export default function Home() {
 
   function changeMode(next: 'live' | 'mock') {
     operation.current++; liveClient.disconnect(); setLive(null); setSelected(null); setBusy(false); setMode(next);
-    setMessage(next === 'live' ? 'Connect your AGS test player.' : 'Offline mock mode. No live service changes.');
+    setMessage(next === 'live' ? 'Connecting your player…' : 'Offline mock mode. No live service changes.');
+    if (next === 'live' && mode === 'live') void connect();
   }
   async function connect() {
     const attempt = ++operation.current;
     setLive(null); setBusy(true); setMessage('Connecting to AGS…');
-    try { const state = await liveClient.connect(deviceId); if (attempt === operation.current) { setLive(state); setDeviceId(''); setMessage('Connected. Wallet and collection loaded from AGS.'); } }
+    try { const state = await liveClient.connectAutomatically(); if (attempt === operation.current) { setLive(state); setMessage('Ready. Wallet and collection loaded from AGS.'); } }
     catch (error) { if (attempt === operation.current) setMessage(error instanceof Error ? error.message : 'Connection failed.'); }
     finally { if (attempt === operation.current) setBusy(false); }
   }
@@ -134,6 +146,6 @@ export default function Home() {
     onSelect={setSelected} onMode={changeMode} onEarn={earn}
     onRefresh={() => void refreshLive()} onBuy={() => void buy()}
     onReset={reset} onResetOpen={setResetOpen}
-    connection={<><p className="eyebrow connection-eyebrow">OUTPOST ACCESS</p><h2>Prepare for the expedition.</h2><p>Connect your test player to load your points and field collection.</p><form onSubmit={(event) => { event.preventDefault(); void connect(); }}><label htmlFor="device-id">Test Device ID</label><input id="device-id" type="password" value={deviceId} onChange={(event) => setDeviceId(event.target.value)} autoComplete="off" maxLength={128} required /><button className="primary-button" disabled={busy || !deviceId.trim()}>{busy ? 'Connecting…' : 'Connect player'}</button></form><p className="connection-footnote">Return with the same Device ID. Demo funding is operator-managed.</p></>}
+    connection={<><p className="eyebrow connection-eyebrow">OUTPOST ACCESS</p><h2>Your next expedition awaits.</h2><p>Your player connects automatically. Starter points cover every reward in the field collection.</p><button className="primary-button" disabled={busy} onClick={() => void connect()}>{busy ? 'Preparing your deck…' : 'Retry connection'}</button><p className="connection-footnote">Use Offline demo below to explore with local demo points.</p></>}
   />;
 }

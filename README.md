@@ -1,17 +1,36 @@
 # Signal Range battle-pass prototype
 
-Read the developer tutorial: **[HTML version](battle-pass-tutorial.html)** or [Markdown version](docs/sa-content-studio/content/battle-pass-tutorial.md). The HTML includes navigation, code examples, configuration screenshots, and an AGS registration link. Open it in a browser; GitHub's file view shows HTML source.
+**[Play the demo](https://accelbyte.github.io/sa-signal-range/)** · **[Developer tutorial](https://accelbyte.github.io/sa-signal-range/battle-pass-tutorial.html)** · **[Play Live AGS](https://signal-range-deck.workspace-025025.chatgpt.site/)**
 
-To rebuild the HTML after editing the Markdown, install the generator dependencies with `python -m pip install -r scripts/tutorial-requirements.txt`, then run `python scripts/build-battle-pass-tutorial.py`. The output uses local media and needs no hosted assets or frontend build.
+Choose rewards, spend points, and unlock the next tier. The browser demo starts with 60 local points and saves progress in your browser. Its **Tutorial** button opens the implementation guide; **Live AGS** opens the server-backed game.
 
-Source: [sites/signal-range](sites/signal-range/README.md). It provides automatic AGS player login and 180 server-granted starter points per player/season, enough for all nine rewards. Purchases unlock Tier 3 at 100 points spent. AGS Orders remains the purchase history; D1 only coordinates starter grants.
+The [prototype source](prototype/README.md) contains the current UI, the offline demo, and the AGS implementation. Live mode provides automatic player login and 180 server-granted starter points per player and season. AGS Orders supplies purchase history; Statistics tracks validated spending; D1 coordinates starter grants.
 
-Both apps now use the outpost presentation, tier tabs, reward details, and an owned-only Collection view. Choose Offline demo for a 60-point local walkthrough without AGS credentials. The tutorial explains navigation, reward purchases, and spending-based access.
+## Development
 
-The [prototype](prototype/README.md) variant uses manual Device ID login and operator funding.
+From `prototype/`, run `npm ci`, `npm test`, `npm run typecheck`, and `npm run build`. Live development requires your own AGS environment and catalog mapping: copy `.env.example` to `.env.local` and follow the app README. Confidential credentials belong in server settings.
 
-Copy the chosen app's `.env.example` to `.env.local` and supply your own environment and catalog IDs. Public `NEXT_PUBLIC_*` values are embedded at build time; confidential credentials stay in server settings. The source defaults are synthetic; configure your AGS environment before using live mode.
+The tutorial is available as [HTML](battle-pass-tutorial.html) and [Markdown](docs/sa-content-studio/content/battle-pass-tutorial.md). To rebuild it:
 
-Run `npm ci`, `npm test`, `npm run typecheck`, and `npm run build` from the chosen app directory. See its README for database setup and deployment configuration.
+```sh
+python -m pip install -r scripts/tutorial-requirements.txt
+python scripts/build-battle-pass-tutorial.py
+```
 
-Run `python scripts/check-public-source.py` to check distributable source. Use `python scripts/export-public-source.py` to create a source archive from the working tree, excluding ignored files and Git history.
+## GitHub Pages
+
+`main` contains editable source. `gh-pages` contains the compiled browser demo, tutorial, and public media. GitHub Pages serves the offline demo; the live AGS game requires a server and runs separately.
+
+Build the Pages package from the repository root:
+
+```sh
+cd prototype
+npm ci
+npm run build:pages
+cd ..
+python scripts/package-github-pages.py
+```
+
+Publish the contents of `dist-pages/` to the `gh-pages` branch. In repository **Settings → Pages**, choose **Deploy from a branch**, **gh-pages**, and **/ (root)**. The project URL is `https://accelbyte.github.io/sa-signal-range/`.
+
+Run `python scripts/check-public-source.py` before publishing source. `python scripts/export-public-source.py` exports current public files without ignored local configuration or Git history.

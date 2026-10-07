@@ -114,7 +114,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   <a class="skip-link" href="#tutorial">Skip to tutorial</a>
   <header class="site-header"><div class="header-inner">
     <a class="brand" href="#top">ACCELBYTE<small>DEVELOPER TUTORIALS</small></a>
-    <div class="header-actions"><a href="docs/sa-content-studio/content/battle-pass-tutorial.md">Markdown source</a><button class="plain-button" type="button" data-print hidden>Print / PDF</button></div>
+    <div class="header-actions"><a href="https://accelbyte.github.io/sa-signal-range/">Play demo</a><a href="docs/sa-content-studio/content/battle-pass-tutorial.md">Markdown source</a><button class="plain-button" type="button" data-print hidden>Print / PDF</button></div>
   </div></header>
   <div class="layout">
     <aside class="sidebar" aria-label="Tutorial navigation">
@@ -342,7 +342,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tbody>
 </table></div>
 <p>These are runtime permissions; catalog and statistic configuration use your authorized setup/admin access separately. The purchase reconciler does not need a separate permission to debit wallets or grant rewards: the player order performs the purchase.</p>
-<p>Confirm the required operations and available permission groups in your own environment. Private Cloud deployments can use resource/action permissions instead of this grouped representation. See the <a href="sites/signal-range/README.md">current implementation README</a>.</p>
+<p>Confirm the required operations and available permission groups in your own environment. Private Cloud deployments can use resource/action permissions instead of this grouped representation. See the <a href="prototype/README.md">current implementation README</a>.</p>
 <h2 id="4-configure-the-economy-and-tier-requirements">4. Configure the economy and tier requirements</h2>
 <p>Complete this configuration before wiring purchases. Keep the published catalog, client display metadata, and trusted backend's item mapping aligned.</p>
 <h3 id="41-create-a-points-currency">4.1 Create a points currency</h3>
@@ -563,7 +563,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>Every reward card can be opened for inspection, including locked and already-owned rewards. <strong>Confirm purchase</strong> is enabled only when the tier is accessible, the reward is unowned and affordable, and there is no unresolved purchase or other operation in progress. Locked reward details explain the remaining spending requirement. This UI logic improves feedback. AGS still evaluates the configured purchase conditions when the order is submitted.</p>
 <p>Display “available,” “spent,” and “owned” separately. When spending publication is delayed, show that progress is processing and provide a retry action. An entitlement appearing does not prove the spending statistic has caught up.</p>
 <p>The example uses a narrow same-origin player bridge to avoid depending on a direct browser-to-AGS Commerce CORS configuration. That bridge verifies the player, allowlists supported paths and request bodies, and forwards with the player's token. It is specific to this deployment; a client with correctly configured direct AGS access can use the equivalent player API calls.</p>
-<p>Source: <a href="sites/signal-range/lib/ags-deck-client.ts">AGS client adapter</a> and <a href="sites/signal-range/app/api/deck/player/route.ts">player bridge</a>.</p>
+<p>Source: <a href="prototype/lib/ags-deck-client.ts">AGS client adapter</a> and <a href="prototype/app/api/deck/player/route.ts">player bridge</a>.</p>
 <h3 id="navigate-the-reward-deck">Navigate the reward deck</h3>
 <p>The screenshots illustrate <strong>Offline demo</strong>, which starts with 60 points and stores progress in the browser.</p>
 <figure class="tutorial-figure" id="figure-6"><a aria-label="Open Figure 6 at full resolution" href="docs/sa-content-studio/content/guide-images/01-offline-deck.jpg" rel="noopener" target="_blank"><img alt="Signal Range starting offline deck shows 60 available points, zero spending, no collected rewards, and the three tier tabs." decoding="async" height="1051" loading="lazy" src="docs/sa-content-studio/content/guide-images/01-offline-deck.jpg" width="1265"/></a><figcaption><strong>Figure 6.</strong> The wallet, spending, and collection count answer separate questions. First contact is accessible; Perimeter and Last signal are locked. These are the offline demo's 60-point starting values.<span class="image-hint">Select the image to open it at full resolution.</span></figcaption></figure>
@@ -660,7 +660,7 @@ Content-Type: application/json
 <span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">total</span><span class="p">,</span><span class="w"> </span><span class="nx">projected</span><span class="p">,</span><span class="w"> </span><span class="nx">orderCount</span><span class="o">:</span><span class="w"> </span><span class="kt">contributions.size</span><span class="w"> </span><span class="p">};</span>
 <span class="p">}</span>
 </code></pre></div>
-<p><code>receipt</code> is the full validator in <a href="sites/signal-range/lib/order-spending.ts">order-spending.ts</a>. <code>SpendingPort</code> is the prototype's own interface, not an AGS SDK class.</p>
+<p><code>receipt</code> is the full validator in <a href="prototype/lib/order-spending.ts">order-spending.ts</a>. <code>SpendingPort</code> is the prototype's own interface, not an AGS SDK class.</p>
 <p>The order-number map counts a repeated snapshot once. Conflicting snapshots are rejected. A second fulfilled order for the same one-time item is also rejected rather than silently treated as another valid purchase.</p>
 <p>The map exists only during reconciliation. AGS Orders retains the purchase history; no separate Cloud Save or D1 purchase ledger is used.</p>
 <h3 id="85-publish-the-total-with-max">8.5 Publish the total with MAX</h3>
@@ -894,7 +894,7 @@ Content-Type: application/json
 <p>Order-history retention is a practical boundary. MAX can preserve a previously published high-water mark when an indexed read is stale; it cannot reconstruct an unprojected order that is permanently unavailable. Confirm the history lifecycle for the length and scale of your season.</p>
 <p>The reusable design is the separation of responsibilities: AGS processes and validates configured purchases; trusted code derives deck spending from verified transactions; AGS purchase conditions use that progress to control access to later items.</p>
 <h2 id="12-explore-the-implementation">12. Explore the implementation</h2>
-<p>Use <code>sites/signal-range/</code> for automatic login and starter grants. The <code>prototype/</code> variant uses manual Device ID login and operator funding.</p>
+<p>Use <code>prototype/</code> for the current UI, automatic login, and starter grants. The GitHub Pages build uses the same UI with local demo state. Select <strong>Tutorial</strong> in the demo to read this guide, or <strong>Live AGS</strong> to open the server-backed game.</p>
 <div aria-label="Scrollable reference table" class="table-wrap" role="region" tabindex="0"><table>
 <thead>
 <tr>
@@ -904,62 +904,62 @@ Content-Type: application/json
 </thead>
 <tbody>
 <tr>
-<td><a href="sites/signal-range/README.md">Current README</a></td>
+<td><a href="prototype/README.md">Current README</a></td>
 <td>Runtime configuration, starter-grant behavior, and local setup</td>
 </tr>
 <tr>
-<td><a href="sites/signal-range/app/page.tsx">Page controller</a></td>
+<td><a href="prototype/app/page.tsx">Page controller</a></td>
 <td>Mode, connection, purchases, and progress state</td>
 </tr>
 <tr>
-<td><a href="sites/signal-range/components/deck-view.tsx">Deck view</a></td>
+<td><a href="prototype/components/deck-view.tsx">Deck view</a></td>
 <td>Tier tabs, Collection, reward details, and confirmation controls</td>
 </tr>
 <tr>
-<td><a href="sites/signal-range/app/outpost.css">Outpost styles</a></td>
+<td><a href="prototype/app/outpost.css">Outpost styles</a></td>
 <td>Refreshed layout and responsive presentation</td>
 </tr>
 <tr>
-<td><a href="sites/signal-range/public/art/signal-range">Runtime artwork</a></td>
+<td><a href="prototype/public/art/signal-range">Runtime artwork</a></td>
 <td>Outpost backdrop, scout, and equipment atlas</td>
 </tr>
 <tr>
-<td><a href="sites/signal-range/lib/deck.ts">Deck definitions</a></td>
+<td><a href="prototype/lib/deck.ts">Deck definitions</a></td>
 <td>Rewards, prices, and tier thresholds; also contains separately used mock helpers</td>
 </tr>
 <tr>
-<td><a href="sites/signal-range/lib/ags-deck-config.ts">Public AGS mapping</a></td>
+<td><a href="prototype/lib/ags-deck-config.ts">Public AGS mapping</a></td>
 <td>Environment and catalog item mapping</td>
 </tr>
 <tr>
-<td><a href="sites/signal-range/lib/server/deck-config.ts">Trusted deck configuration</a></td>
+<td><a href="prototype/lib/server/deck-config.ts">Trusted deck configuration</a></td>
 <td>Original deck membership used for attribution</td>
 </tr>
 <tr>
-<td><a href="sites/signal-range/lib/ags-deck-client.ts">Live client adapter</a></td>
+<td><a href="prototype/lib/ags-deck-client.ts">Live client adapter</a></td>
 <td>Authoritative reads, purchases, and unresolved-request handling</td>
 </tr>
 <tr>
-<td><a href="sites/signal-range/lib/order-spending.ts">Order validation and accounting</a></td>
+<td><a href="prototype/lib/order-spending.ts">Order validation and accounting</a></td>
 <td>Validated receipts, pagination, deduplication, and total computation</td>
 </tr>
 <tr>
-<td><a href="sites/signal-range/lib/server/reconcile-deck.ts">Backend reconciler</a></td>
+<td><a href="prototype/lib/server/reconcile-deck.ts">Backend reconciler</a></td>
 <td>Order-history queries and Statistics MAX publication</td>
 </tr>
 <tr>
-<td><a href="sites/signal-range/lib/server/identity.ts">Identity verification</a></td>
+<td><a href="prototype/lib/server/identity.ts">Identity verification</a></td>
 <td>Verification of protected player requests</td>
 </tr>
 <tr>
-<td><a href="sites/signal-range/lib/starter-grant.ts">Starter-grant coordinator</a></td>
+<td><a href="prototype/lib/starter-grant.ts">Starter-grant coordinator</a></td>
 <td>Separate funding reservation/recovery logic</td>
 </tr>
 </tbody>
 </table></div>
 <p>For a local reproduction, copy <code>.env.example</code> to <code>.env.local</code> and fill in your own namespace, public client ID, and nine <code>NEXT_PUBLIC_AGS_ITEM_*</code> values. The public values are embedded at build time; rebuild after changing them. Defaults in the source are synthetic and use a non-routable example host. Put <code>AGS_BASE_URL</code>, <code>AGS_NAMESPACE</code>, <code>AGS_WORKER_CLIENT_ID</code>, and <code>AGS_WORKER_CLIENT_SECRET</code> in server settings. If retaining automatic funding, configure its D1 binding/migrations as described in the README and optionally set <code>AGS_STARTER_POINTS</code>.</p>
 <p>After runtime configuration, the project checks are:</p>
-<div class="code-block"><div class="code-toolbar"><span class="code-label">Shell</span><button aria-label="Copy code example 10" aria-live="polite" class="copy-code" data-copy="" hidden="" type="button">Copy</button></div><pre aria-label="Shell code example" tabindex="0"><code class="language-sh highlight" id="code-10"><span class="nb">cd</span><span class="w"> </span>sites/signal-range
+<div class="code-block"><div class="code-toolbar"><span class="code-label">Shell</span><button aria-label="Copy code example 10" aria-live="polite" class="copy-code" data-copy="" hidden="" type="button">Copy</button></div><pre aria-label="Shell code example" tabindex="0"><code class="language-sh highlight" id="code-10"><span class="nb">cd</span><span class="w"> </span>prototype
 npm<span class="w"> </span>ci
 npm<span class="w"> </span><span class="nb">test</span>
 npm<span class="w"> </span>run<span class="w"> </span>typecheck
@@ -969,7 +969,7 @@ npm<span class="w"> </span>run<span class="w"> </span>build
 <p>For your target engine or another backend language, use the equivalent documented operations from the <a href="https://docs.accelbyte.io/api-explorer/">AGS API Explorer</a>. Preserve the player/service authentication boundary and the validated-order accounting rule when translating the example.</p>
 <section aria-labelledby="build-your-own-choice-based-battle-pass" class="cta"><h2 id="build-your-own-choice-based-battle-pass">Build your own choice-based battle pass</h2>
 <p>Ready to try the same pattern in your game? Register for AGS, create a test namespace, and start with a points wallet, a small reward catalog, and spending-based purchase requirements.</p>
-<p><strong><a class="cta-link" href="https://prod.gamingservices.accelbyte.io/auth/register?utm_source=github&amp;utm_medium=source-code&amp;utm_campaign=sa-content&amp;utm_content=2026-10-06-choice-based-battle-pass-tutorial">Register for AccelByte Gaming Services</a></strong></p>
+<p><strong><a class="cta-link" href="https://prod.gamingservices.accelbyte.io/auth/register?utm_source=github&amp;utm_medium=source-code&amp;utm_campaign=sa-content&amp;utm_content=choice-based-battle-pass-tutorial">Register for AccelByte Gaming Services</a></strong></p>
 </section></article>
       <footer class="page-footer">AGS developer tutorial · Choice-based reward progression<br>
         <a href="docs/sa-content-studio/content/battle-pass-tutorial.md">Read the Markdown source</a><a class="back-to-top" href="#top">Back to top ↑</a>

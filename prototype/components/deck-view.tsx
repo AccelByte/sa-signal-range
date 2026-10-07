@@ -20,6 +20,8 @@ type Props = {
   selectedIssue: string | null;
   resetOpen: boolean;
   storageLabel: string;
+  tutorialHref?: string;
+  assetBase?: string;
   connection: ReactNode;
   onSelect: (reward: Reward | null) => void;
   onMode: (mode: 'live' | 'mock') => void;
@@ -52,6 +54,7 @@ export function DeckView(props: Props) {
       <nav className="outpost-nav" aria-label="Reward views">
         <button aria-pressed={view === 'deck'} onClick={() => setView('deck')}>Reward deck</button>
         <button aria-pressed={view === 'collection'} onClick={() => setView('collection')}>Collection <span>{deck.owned.length.toString().padStart(2, '0')}</span></button>
+        {props.tutorialHref && <a href={props.tutorialHref}>Tutorial <ArrowRight size={14} aria-hidden="true" /></a>}
       </nav>
       <div className="outpost-wallet"><Zap size={18} aria-hidden="true" /><strong>{connected ? deck.balance : '—'}</strong><span>PTS</span></div>
       <span className={`player-indicator ${connected ? 'is-connected' : ''}`}><span />{mode === 'mock' ? 'OFFLINE DEMO' : connected ? `PLAYER ${props.player?.slice(0, 8)}` : busy ? 'CONNECTING' : 'DISCONNECTED'}</span>
@@ -79,7 +82,7 @@ export function DeckView(props: Props) {
 
         <aside className="character-stage" aria-label="Signal Range expedition scout">
           <div className="character-orbit" aria-hidden="true" />
-          <img className="scout-character" src="/art/signal-range/scout-v1.png" alt="Signal Range scout in a weathered blue and orange field jacket with a yellow expedition pack" fetchPriority="high" />
+          <img className="scout-character" src={`${props.assetBase ?? '/'}art/signal-range/scout-v1.png`} alt="Signal Range scout in a weathered blue and orange field jacket with a yellow expedition pack" fetchPriority="high" />
           <div className="field-coordinate" aria-hidden="true"><span>RELAY / 001</span><span>TRANSMISSION ACTIVE</span><span className="coordinate-cross">+</span></div>
           <div className="character-caption"><span className="character-badge"><Compass size={16} aria-hidden="true" /> EXPEDITION SCOUT</span><strong>The wayfinder</strong><p>Somewhere beyond the perimeter,<br />a signal is still calling.</p></div>
         </aside>

@@ -67,7 +67,7 @@ For order reconciliation, configure the worker client with these permission grou
 
 These permissions support order reads and spending-statistic writes. Their access is namespace-wide, so restrict every operation to the verified player and configured deck. This reconciliation worker does not need Cloud Save, wallet-credit, or entitlement-fulfillment permission.
 
-The prototype starts with operator-funded points. Awarding currency from trusted gameplay completion is outside this implementation.
+The live prototype grants 180 starter points once per player and season through a verified server request. Awarding currency from trusted gameplay completion is outside this implementation.
 
 ## Let AGS complete the purchase
 

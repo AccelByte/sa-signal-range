@@ -1,5 +1,4 @@
-import { sites } from '@openai/sites-vite-plugin';
-import { existsSync } from 'node:fs';
+import { sites } from './build/sites-vite-plugin';
 import tailwindcss from '@tailwindcss/postcss';
 import vinext from 'vinext';
 import { defineConfig } from 'vite';
@@ -52,7 +51,7 @@ export default defineConfig(async () => {
       : undefined,
     plugins: [
       vinext(),
-      ...(existsSync(new URL('./.openai/hosting.json', import.meta.url)) ? [sites()] : []),
+      sites(),
       cloudflare({
         viteEnvironment: { name: 'rsc', childEnvironments: ['ssr'] },
         config: localBindingConfig,

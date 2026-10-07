@@ -25,7 +25,8 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
 .outpost-brand > span { font-size: 17px; letter-spacing: .15em; font-weight: 800; }
 .outpost-brand small { display: block; font: 8px/1.8 var(--font-geist-mono), monospace; color: #98a3b4; letter-spacing: .22em; }
 .outpost-nav { display: flex; gap: 24px; align-self: stretch; margin-left: 22px; }
-.outpost-nav button { display: flex; align-items: center; gap: 8px; border-bottom: 3px solid transparent; padding: 5px 0 0; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #b8c2cf; font-weight: 700; }
+.outpost-nav button, .outpost-nav > a { display: flex; align-items: center; gap: 8px; border-bottom: 3px solid transparent; padding: 5px 0 0; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #b8c2cf; font-weight: 700; text-decoration: none; }
+.outpost-nav > a:hover { color: var(--deck-yellow); border-bottom-color: var(--deck-yellow); }
 .outpost-nav button[aria-pressed=true] { color: var(--deck-yellow); border-bottom-color: var(--deck-yellow); }
 .outpost-nav button > span { font: 10px var(--font-geist-mono), monospace; color: #a6b1be; }
 .outpost-wallet { display: flex; align-items: center; gap: 9px; margin-left: auto; color: var(--deck-teal); }
@@ -196,7 +197,7 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
   .outpost-brand { flex: 1; }
   .outpost-wallet { margin-left: 0; }
   .outpost-nav { order: 3; flex-basis: 100%; height: 48px; }
-  .outpost-nav button { font-size: 11px; }
+  .outpost-nav button, .outpost-nav > a { font-size: 11px; }
   .outpost-content { padding-inline: 18px; }
   .outpost-backdrop { background-position: 62% center; }
   .expedition-stage { display: flex; flex-direction: column; }

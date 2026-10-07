@@ -11,8 +11,10 @@ test('lost create response recovers through history across reload without a repe
   const reply=v=>new Response(JSON.stringify(v),{status:200});
   globalThis.fetch=async(url,init)=>{
     url=String(url);
-    if(url.includes('/device/token'))return reply({access_token:'fake-player-token'});
+    if(url==='/api/deck/login')return reply({access_token:'fake-player-token'});
+    if(url.startsWith('/api/deck/player?')) url=new URL(url,'https://site.example').searchParams.get('path');
     if(url==='/api/deck/identity')return reply(identity);
+    if(url==='/api/deck/bootstrap')return reply({starterPoints:180});
     if(url==='/api/deck/reconcile'){reconcileCount++;return reply({total:visible?10:0,projected:visible?10:0,pendingItems:[],fulfilledItems:visible?[DECK_ITEMS['sr-field-radio']]:[]})}
     if(url.endsWith('/orders') && init.method==='POST'){createCount++;fulfilled=true;throw Error('response lost after AGS commits')}
     if(url.includes('/wallets/'))return reply({...identity,currencyCode:'RDP',balance:fulfilled?50:60});
