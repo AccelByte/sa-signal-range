@@ -520,7 +520,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </ol>
 <p>Device ID continuity is a demo convenience. Clearing browser storage can lose the credential; it does not provide cross-device recovery or a full production account lifecycle. Use your game's supported account/platform login flow for the player experience you need.</p>
 <h3 id="demo-funding-versus-gameplay-earning">Demo funding versus gameplay earning</h3>
-<p>The live Site is configured to grant <strong>180 starter points per player and deck</strong>. This makes all nine rewards affordable while still requiring purchases to unlock tiers. It does not implement gameplay-based earning.</p>
+<p>The demo is configured to grant <strong>180 starter points per player and deck</strong>. This makes all nine rewards affordable while still requiring purchases to unlock tiers. It does not implement gameplay-based earning.</p>
 <p>The funding route verifies the player, reserves a grant keyed by namespace/deck/player, and credits AGS Wallet. A D1 database stores only starter-grant reservations and completion state. <strong>Purchase spending and purchase history remain in AGS Orders.</strong></p>
 <p>The reservation prevents concurrent requests from independently issuing the same starter credit. If a credit response is lost, the backend searches AGS wallet transactions for the matching reason and amount before completing the reservation. An unresolved outcome remains blocked; a crash before credit submission can require operator review. This is not a general exactly-once wallet API guarantee.</p>
 <p>For a simpler integration, fund a disposable player through your authorized test setup and omit the automatic grant route. For gameplay earning, have trusted game logic validate the completed activity and award points; do not accept an arbitrary point amount from a player request.</p>
@@ -882,7 +882,7 @@ Content-Type: application/json
 <p>Order-history retention is a practical boundary. MAX can preserve a previously published high-water mark when an indexed read is stale; it cannot reconstruct an unprojected order that is permanently unavailable. Confirm the history lifecycle for the length and scale of your season.</p>
 <p>The reusable design is the separation of responsibilities: AGS processes and validates configured purchases; trusted code derives deck spending from verified transactions; AGS purchase conditions use that progress to control access to later items.</p>
 <h2 id="12-explore-the-implementation">12. Explore the implementation</h2>
-<p>Use <code>prototype/</code> for the current UI, automatic login, and starter grants. The GitHub Pages build uses the same UI with local demo state. Select <strong>Tutorial</strong> in the demo to read this guide, or <strong>Live AGS</strong> to open the server-backed game.</p>
+<p>Use <code>prototype/</code> for the current UI, automatic login, and starter grants. The GitHub Pages build connects the same UI to the deck backend. Select <strong>Tutorial</strong> in the demo to read this guide.</p>
 <div aria-label="Scrollable reference table" class="table-wrap" role="region" tabindex="0"><table>
 <thead>
 <tr>
