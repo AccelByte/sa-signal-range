@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="Build a choice-based battle pass with AGS Wallet, Store, Orders, Entitlements, Statistics, and native purchasing requirements." name="description"/>
+<meta content="#14221b" name="theme-color"/>
+<title>Build a Choice-Based Battle Pass with AccelByte Gaming Services | AGS Developer Tutorial</title>
+<style>
+:root{color-scheme:light;--ink:#172b3a;--muted:#5c6d78;--blue:#1457c4;--line:#dbe3e9;--paper:#fff;--canvas:#f5f7fa;--gold:#edd153;--dark:#14221b;--radius:10px}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:100px}body{margin:0;background:var(--canvas);color:var(--ink);font:17px/1.75 "Segoe UI",Arial,sans-serif}a{color:var(--blue);text-underline-offset:3px;overflow-wrap:anywhere}a:hover{text-decoration-thickness:2px}button,summary{font:inherit}button,a,summary{-webkit-tap-highlight-color:transparent}:focus-visible{outline:3px solid #e2b52e;outline-offset:4px}button{cursor:pointer}.skip-link{position:fixed;top:-80px;left:16px;z-index:99;background:white;padding:10px 16px;border:2px solid var(--blue)}.skip-link:focus{top:10px}
+.site-header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.97);border-top:4px solid var(--gold);border-bottom:1px solid var(--line)}.header-inner{max-width:1340px;margin:auto;padding:14px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{font-size:17px;letter-spacing:.08em;font-weight:800;color:var(--ink);text-decoration:none}.brand small{font-size:10px;color:var(--muted);letter-spacing:.14em;display:block;line-height:1.4}.header-actions{display:flex;gap:18px;align-items:center;font-size:13px}.header-actions a{text-decoration:none}.plain-button{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:6px;padding:5px 12px;font-size:13px}.plain-button:hover{background:#edf2f7}
+.layout{max-width:1340px;margin:auto;padding:48px 32px 80px;display:grid;grid-template-columns:222px minmax(0,1fr);gap:48px;align-items:start}.sidebar{position:sticky;top:100px;max-height:calc(100vh - 124px);overflow:auto;padding-right:12px}.toc summary{list-style:none;cursor:pointer;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:18px}.toc summary::-webkit-details-marker{display:none}.toc summary::after{content:" −"}.toc:not([open]) summary::after{content:" +"}.toc nav a{display:block;font-size:13px;line-height:1.45;text-decoration:none;color:var(--muted);padding:8px 10px;border-left:2px solid transparent;margin:0 0 3px}.toc nav a:hover{color:var(--blue);background:#eaf0f8}.toc nav a[aria-current=true]{color:var(--blue);border-left-color:var(--blue);background:#eaf0f8;font-weight:600}.sidebar-note{font-size:12px;line-height:1.6;color:var(--muted);border-top:1px solid var(--line);padding-top:18px;margin-top:20px}
+.reader{min-width:0;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:48px 52px}.eyebrow{font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--blue);margin:0 0 16px}.hero h1{font-size:clamp(34px,4vw,54px);line-height:1.12;letter-spacing:-.04em;margin:0 0 22px;color:#112735;font-weight:750}.subtitle{font-size:20px;line-height:1.55;color:var(--muted);margin:0 0 20px}.meta{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;line-height:1.5;color:var(--muted);padding-bottom:30px;border-bottom:1px solid var(--line);margin-bottom:32px}.meta span+span::before{content:"·";margin-right:12px}
+article p{margin:0 0 20px}article ul,article ol{padding-left:25px;margin:0 0 25px}article li{padding-left:3px;margin:5px 0}article h2{font-size:29px;line-height:1.3;letter-spacing:-.025em;margin:64px 0 24px;padding-top:26px;border-top:1px solid var(--line);scroll-margin-top:96px}article h3{font-size:21px;line-height:1.4;letter-spacing:-.015em;margin:34px 0 16px;scroll-margin-top:96px}article h4{font-size:18px;margin:26px 0 12px}article strong{font-weight:650}article blockquote{border-left:3px solid var(--blue);padding:16px 20px;background:#edf4fe;margin:24px 0}article blockquote p:last-child{margin-bottom:0}article :not(pre)>code{font: .85em/1.5 Consolas,"Cascadia Code",monospace;background:#edf1f5;color:#174a72;border-radius:4px;padding:2px 5px;overflow-wrap:anywhere}
+.table-wrap{overflow-x:auto;max-width:100%;margin:26px 0 30px;border:1px solid var(--line);border-radius:8px}table{border-collapse:collapse;width:100%;font-size:14px;line-height:1.6;min-width:540px}th{background:#edf2f7;text-align:left;color:#253b4c;font-weight:650}th,td{padding:13px 15px;border-bottom:1px solid var(--line);vertical-align:top}tr:last-child td{border-bottom:0}tbody tr:nth-child(even){background:#fafbfd}td[style*="text-align:right"],th[style*="text-align:right"]{font-variant-numeric:tabular-nums}
+.tutorial-figure{margin:32px 0 36px;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#f7f9fb}.tutorial-figure>a{display:block}.tutorial-figure img{width:100%;height:auto;display:block;background:#fff}.tutorial-figure a:hover img{opacity:.98}.tutorial-figure figcaption{font-size:12px;line-height:1.7;padding:14px 18px;color:#526471;background:#f5f8fb;border-top:1px solid var(--line)}.tutorial-figure figcaption strong{color:#243d4e}.image-hint{display:block;font-size:11px;color:var(--blue);margin-top:5px}.config-details,.video-demo{border:1px solid var(--line);border-radius:8px;margin:28px 0;background:#fafcfe}.config-details>summary,.video-demo>summary{font-size:14px;font-weight:650;padding:17px 18px;cursor:pointer;color:#23455c}.config-details[open]>summary,.video-demo[open]>summary{border-bottom:1px solid var(--line)}.config-details .tutorial-figure{margin:0;border:0;border-radius:0 0 8px 8px}.video-demo video{display:block;width:100%;aspect-ratio:16/9;background:#101812}.video-demo .video-caption{padding:16px 18px;font-size:13px;line-height:1.7;margin:0}.video-caption a{display:inline-block;margin-top:8px}
+.code-block{margin:25px 0 30px;border-radius:8px;overflow:hidden;border:1px solid #2e3d43;background:#1d262d;color:#f4f4ef}.code-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 15px;background:#26323a;border-bottom:1px solid #39464b}.code-label{font:11px/1.5 Consolas,monospace;text-transform:uppercase;letter-spacing:.1em;color:#c8d5dc}.copy-code{color:#edf4f8;background:#33434d;border:1px solid #596c77;border-radius:4px;font-size:11px;padding:3px 10px;min-width:52px}.copy-code:hover{background:#445864}.code-block pre{margin:0;padding:21px 20px;overflow-x:auto;tab-size:2;font:13px/1.8 Consolas,"Cascadia Code",monospace}.code-block code{font:inherit;background:none;color:inherit;padding:0;white-space:pre;word-break:normal;overflow-wrap:normal}
+.cta{background:var(--dark);color:#eff4ef;border-radius:10px;padding:34px;margin:55px 0 18px}.cta h2{color:#fff;border:0;margin:0 0 18px;padding:0;font-size:29px;scroll-margin-top:96px}.cta p{color:#cfdbd1}.cta p:last-child{margin-bottom:0}.cta .cta-link{display:inline-block;background:var(--gold);color:#17231b;text-decoration:none;font-size:15px;font-weight:700;line-height:1.5;padding:13px 20px;border-radius:5px}.cta .cta-link:hover{background:#f5dc68}.page-footer{margin-top:34px;padding-top:24px;border-top:1px solid var(--line);color:var(--muted);font-size:12px;line-height:1.8}.page-footer a{text-decoration:none}.back-to-top{display:inline-block;margin-left:18px}
+@media(min-width:1500px){.layout{gap:60px}}
+@media(max-width:1100px){.layout{grid-template-columns:195px minmax(0,1fr);gap:28px;padding:32px 22px 60px}.reader{padding:34px 30px}.hero h1{font-size:43px}}
+@media(max-width:900px){.layout{display:block;padding:24px 20px 48px}.sidebar{position:static;max-height:none;padding:0;margin-bottom:22px}.toc{border:1px solid var(--line);border-radius:8px;background:#fff}.toc summary{margin:0;padding:14px 18px}.toc nav{padding:0 12px 12px}.sidebar-note{display:none}.reader{padding:34px}.header-inner{padding:12px 20px}.hero h1{font-size:43px}}
+@media(max-width:600px){body{font-size:16px;line-height:1.75}.header-inner{padding:10px 16px;gap:10px}.brand{font-size:14px}.brand small{font-size:9px}.header-actions{gap:12px;font-size:12px}.plain-button{padding:4px 8px;font-size:12px}.layout{padding:18px 12px 32px}.reader{padding:28px 20px}.hero h1{font-size:34px}.subtitle{font-size:18px}.meta{font-size:11px;gap:7px}.meta span+span::before{margin-right:7px}article h2{font-size:25px;margin-top:45px;padding-top:22px}article h3{font-size:20px}th,td{padding:11px 12px}.code-block pre{font-size:12px;padding:16px}.tutorial-figure figcaption{padding:12px 14px}.cta{padding:26px 22px}.cta h2{font-size:25px}.cta .cta-link{font-size:14px;padding:12px 15px}.back-to-top{margin-left:0;display:block;margin-top:8px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media print{body{background:white;color:black;font-size:10pt;line-height:1.5}.site-header,.sidebar,.copy-code,.page-footer,.image-hint{display:none!important}.layout{display:block;padding:0;max-width:none}.reader{padding:0;border:0}.hero h1{font-size:30pt}article h2{font-size:19pt;margin-top:25pt;break-after:avoid}article h3{break-after:avoid}.table-wrap{overflow:visible}table{min-width:0;font-size:8pt}th,td{padding:6pt}.code-block{background:#f5f5f5;color:#111;border:1px solid #ccc;overflow:visible}.code-toolbar{background:#eee}.code-label{color:#111}.code-block pre{white-space:pre-wrap;overflow:visible;font-size:8pt}.code-block code{white-space:pre-wrap}.code-block .highlight span{color:#111!important}.tutorial-figure{break-inside:avoid}.cta{background:#f3f4ef;color:#111}.cta h2,.cta p{color:#111}.cta .cta-link{border:1px solid #999;color:#111}a{color:#174a72}.video-demo video{display:none}.video-demo .video-caption{display:block}}
+
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.code-block .highlight .hll { background-color: #49483e }
+.code-block .highlight { background: #272822; color: #F8F8F2 }
+.code-block .highlight .c { color: #959077 } /* Comment */
+.code-block .highlight .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.code-block .highlight .esc { color: #F8F8F2 } /* Escape */
+.code-block .highlight .g { color: #F8F8F2 } /* Generic */
+.code-block .highlight .k { color: #66D9EF } /* Keyword */
+.code-block .highlight .l { color: #AE81FF } /* Literal */
+.code-block .highlight .n { color: #F8F8F2 } /* Name */
+.code-block .highlight .o { color: #FF4689 } /* Operator */
+.code-block .highlight .x { color: #F8F8F2 } /* Other */
+.code-block .highlight .p { color: #F8F8F2 } /* Punctuation */
+.code-block .highlight .ch { color: #959077 } /* Comment.Hashbang */
+.code-block .highlight .cm { color: #959077 } /* Comment.Multiline */
+.code-block .highlight .cp { color: #959077 } /* Comment.Preproc */
+.code-block .highlight .cpf { color: #959077 } /* Comment.PreprocFile */
+.code-block .highlight .c1 { color: #959077 } /* Comment.Single */
+.code-block .highlight .cs { color: #959077 } /* Comment.Special */
+.code-block .highlight .gd { color: #FF4689 } /* Generic.Deleted */
+.code-block .highlight .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.code-block .highlight .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.code-block .highlight .gr { color: #F8F8F2 } /* Generic.Error */
+.code-block .highlight .gh { color: #F8F8F2 } /* Generic.Heading */
+.code-block .highlight .gi { color: #A6E22E } /* Generic.Inserted */
+.code-block .highlight .go { color: #66D9EF } /* Generic.Output */
+.code-block .highlight .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.code-block .highlight .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.code-block .highlight .gu { color: #959077 } /* Generic.Subheading */
+.code-block .highlight .gt { color: #F8F8F2 } /* Generic.Traceback */
+.code-block .highlight .kc { color: #66D9EF } /* Keyword.Constant */
+.code-block .highlight .kd { color: #66D9EF } /* Keyword.Declaration */
+.code-block .highlight .kn { color: #FF4689 } /* Keyword.Namespace */
+.code-block .highlight .kp { color: #66D9EF } /* Keyword.Pseudo */
+.code-block .highlight .kr { color: #66D9EF } /* Keyword.Reserved */
+.code-block .highlight .kt { color: #66D9EF } /* Keyword.Type */
+.code-block .highlight .ld { color: #E6DB74 } /* Literal.Date */
+.code-block .highlight .m { color: #AE81FF } /* Literal.Number */
+.code-block .highlight .s { color: #E6DB74 } /* Literal.String */
+.code-block .highlight .na { color: #A6E22E } /* Name.Attribute */
+.code-block .highlight .nb { color: #F8F8F2 } /* Name.Builtin */
+.code-block .highlight .nc { color: #A6E22E } /* Name.Class */
+.code-block .highlight .no { color: #66D9EF } /* Name.Constant */
+.code-block .highlight .nd { color: #A6E22E } /* Name.Decorator */
+.code-block .highlight .ni { color: #F8F8F2 } /* Name.Entity */
+.code-block .highlight .ne { color: #A6E22E } /* Name.Exception */
+.code-block .highlight .nf { color: #A6E22E } /* Name.Function */
+.code-block .highlight .nl { color: #F8F8F2 } /* Name.Label */
+.code-block .highlight .nn { color: #F8F8F2 } /* Name.Namespace */
+.code-block .highlight .nx { color: #A6E22E } /* Name.Other */
+.code-block .highlight .py { color: #F8F8F2 } /* Name.Property */
+.code-block .highlight .nt { color: #FF4689 } /* Name.Tag */
+.code-block .highlight .nv { color: #F8F8F2 } /* Name.Variable */
+.code-block .highlight .ow { color: #FF4689 } /* Operator.Word */
+.code-block .highlight .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.code-block .highlight .w { color: #F8F8F2 } /* Text.Whitespace */
+.code-block .highlight .mb { color: #AE81FF } /* Literal.Number.Bin */
+.code-block .highlight .mf { color: #AE81FF } /* Literal.Number.Float */
+.code-block .highlight .mh { color: #AE81FF } /* Literal.Number.Hex */
+.code-block .highlight .mi { color: #AE81FF } /* Literal.Number.Integer */
+.code-block .highlight .mo { color: #AE81FF } /* Literal.Number.Oct */
+.code-block .highlight .sa { color: #E6DB74 } /* Literal.String.Affix */
+.code-block .highlight .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.code-block .highlight .sc { color: #E6DB74 } /* Literal.String.Char */
+.code-block .highlight .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.code-block .highlight .sd { color: #E6DB74 } /* Literal.String.Doc */
+.code-block .highlight .s2 { color: #E6DB74 } /* Literal.String.Double */
+.code-block .highlight .se { color: #AE81FF } /* Literal.String.Escape */
+.code-block .highlight .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.code-block .highlight .si { color: #E6DB74 } /* Literal.String.Interpol */
+.code-block .highlight .sx { color: #E6DB74 } /* Literal.String.Other */
+.code-block .highlight .sr { color: #E6DB74 } /* Literal.String.Regex */
+.code-block .highlight .s1 { color: #E6DB74 } /* Literal.String.Single */
+.code-block .highlight .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.code-block .highlight .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.code-block .highlight .fm { color: #A6E22E } /* Name.Function.Magic */
+.code-block .highlight .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.code-block .highlight .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.code-block .highlight .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.code-block .highlight .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.code-block .highlight .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style>
+</head>
+<body id="top">
+<a class="skip-link" href="#tutorial">Skip to tutorial</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="#top">ACCELBYTE<small>DEVELOPER TUTORIALS</small></a>
+<div class="header-actions"><a href="./">Play demo</a><a href="https://github.com/AccelByte/sa-signal-range/blob/main/docs/sa-content-studio/content/battle-pass-tutorial.md">Markdown source</a><button class="plain-button" data-print="" hidden="" type="button">Print / PDF</button></div>
+</div></header>
+<div class="layout">
+<aside aria-label="Tutorial navigation" class="sidebar">
+<details class="toc" open=""><summary>On this page</summary><nav><a href="#1-define-the-battle-pass-rules">Define the battle-pass rules</a><a href="#2-choose-the-ags-services">Choose the AGS services</a><a href="#3-prepare-identity-and-backend-access">Prepare identity and backend access</a><a href="#4-configure-the-economy-and-tier-requirements">Configure the economy and tier requirements</a><a href="#5-connect-the-player-and-prepare-points">Connect the player and prepare points</a><a href="#6-load-the-deck-from-ags">Load the deck from AGS</a><a href="#7-purchase-a-selected-reward">Purchase a selected reward</a><a href="#8-derive-spending-from-fulfilled-orders">Derive spending from fulfilled orders</a><a href="#9-recover-from-interrupted-requests">Recover from interrupted requests</a><a href="#10-verify-the-complete-loop">Verify the complete loop</a><a href="#11-adapt-the-design-for-your-game">Adapt the design for your game</a><a href="#12-explore-the-implementation">Explore the implementation</a><a href="#build-your-own-choice-based-battle-pass">Build with AGS ↗</a></nav></details>
+<p class="sidebar-note">A complete implementation walkthrough.<br/>Wallet · Orders · Statistics<br/>Signal Range reward deck</p>
+</aside>
+<main class="reader" id="tutorial">
+<header class="hero"><p class="eyebrow">AGS implementation guide</p><h1>Build a Choice-Based Battle Pass with AccelByte Gaming Services</h1>
+<p class="subtitle">A developer tutorial for reward selection, virtual-currency purchases, and spending-based tier access.</p>
+<div class="meta"><span>26 min read</span><span>REST + TypeScript examples</span></div>
+</header>
+<article>
+<blockquote>
+<p>Read the browser-friendly <a href="./battle-pass-tutorial.html">HTML guide</a>, with code examples and configuration screenshots.</p>
+</blockquote>
+<p>Imagine a battle pass where players decide which rewards to buy. A player chooses a radio charm, skips a compass skin, and saves for a backpack appearance. Their purchases open the next tier, where they can make another choice.</p>
+<p>This tutorial breaks down how to support that experience with AccelByte Gaming Services (AGS). AGS supplies player identity, a virtual-currency wallet, catalog purchases, ownership, and purchase conditions. A small trusted backend derives cumulative deck spending from fulfilled orders and updates the value that controls tier access.</p>
+<p>The example is <strong>Signal Range</strong>, an original three-tier deck with nine cosmetic rewards. It is inspired by the player-choice mechanic discussed around ARC Raiders' Raider Deck. The art, prices, and thresholds are teaching examples; this tutorial does not claim to reproduce that game's economy or describe its backend.</p>
+<p><strong>By the end, you will know how to:</strong></p>
+<ul>
+<li>Map a choice-based pass to AGS services.</li>
+<li>Configure points, reward items, spending progress, and tier requirements.</li>
+<li>Purchase a selected reward using the player's identity.</li>
+<li>Rebuild progress from authoritative orders without counting a purchase twice.</li>
+<li>Handle interrupted requests and verify the rules beyond the UI.</li>
+</ul>
+<h2 id="1-define-the-battle-pass-rules">1. Define the battle-pass rules</h2>
+<p>Start with the player rules before choosing backend endpoints:</p>
+<ol>
+<li>Players have spendable points in a virtual-currency wallet.</li>
+<li>Every reward has a price and belongs to a tier.</li>
+<li>Players can buy any unowned reward in an accessible tier if they can afford it.</li>
+<li>Only fulfilled purchases belonging to this deck count toward its spending progress.</li>
+<li>Spending at least 40 points opens Tier 2; spending at least 100 opens Tier 3.</li>
+<li>Opening a tier grants access to its rewards. Each reward still needs to be purchased.</li>
+<li>Players can leave earlier rewards unowned and return to them later.</li>
+</ol>
+<p>Keep three values separate:</p>
+<div aria-label="Scrollable reference table" class="table-wrap" role="region" tabindex="0"><table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Meaning</th>
+<th>Authoritative source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Available points</td>
+<td>What the player can spend now</td>
+<td>AGS Wallet</td>
+</tr>
+<tr>
+<td>Deck spending</td>
+<td>Points paid for fulfilled purchases in this deck</td>
+<td>Derived from AGS Orders and published to Statistics</td>
+</tr>
+<tr>
+<td>Owned rewards</td>
+<td>Which rewards the player currently owns</td>
+<td>AGS Entitlements</td>
+</tr>
+</tbody>
+</table></div>
+<p>For a newly funded player, the first two purchases could look like this:</p>
+<div aria-label="Scrollable reference table" class="table-wrap" role="region" tabindex="0"><table>
+<thead>
+<tr>
+<th>Action</th>
+<th style="text-align:right">Available points</th>
+<th style="text-align:right">Deck spending</th>
+<th style="text-align:right">Owned rewards</th>
+<th>Tier access</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Receive 180 starter points</td>
+<td style="text-align:right">180</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td>Tier 1</td>
+</tr>
+<tr>
+<td>Buy Field radio for 10</td>
+<td style="text-align:right">170</td>
+<td style="text-align:right">10</td>
+<td style="text-align:right">1</td>
+<td>Tier 1</td>
+</tr>
+<tr>
+<td>Buy Ridge pack for 30</td>
+<td style="text-align:right">140</td>
+<td style="text-align:right">40</td>
+<td style="text-align:right">2</td>
+<td>Tiers 1 and 2</td>
+</tr>
+</tbody>
+</table></div>
+<p>Pathfinder can remain unowned. The player has reached the spending threshold without completing the first tier's collection.</p>
+<p>Funding also stays separate: receiving another 40 points increases the wallet by 40, but does not increase deck spending or grant a reward. Calculating progress as “starting balance minus current balance” would break as soon as you introduced top-ups or unrelated purchases.</p>
+<h2 id="2-choose-the-ags-services">2. Choose the AGS services</h2>
+<p>The battle pass is a composition of existing services:</p>
+<div aria-label="Scrollable reference table" class="table-wrap" role="region" tabindex="0"><table>
+<thead>
+<tr>
+<th>Responsibility</th>
+<th>AGS service or component</th>
+<th>What this tutorial uses it for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Identify the player</td>
+<td>IAM</td>
+<td>Authenticate the player and associate purchases with their account</td>
+</tr>
+<tr>
+<td>Hold points</td>
+<td>Wallet</td>
+<td>Maintain spendable RDP virtual currency</td>
+</tr>
+<tr>
+<td>Define reward offers</td>
+<td>Store / Catalog</td>
+<td>Configure each cosmetic, its price, and purchase limits</td>
+</tr>
+<tr>
+<td>Execute and record purchases</td>
+<td>Orders</td>
+<td>Buy rewards and retain authoritative transaction history</td>
+</tr>
+<tr>
+<td>Record ownership</td>
+<td>Entitlements</td>
+<td>Read the player's active reward ownership</td>
+</tr>
+<tr>
+<td>Expose spending progress</td>
+<td>Statistics</td>
+<td>Store a server-written deck spending value</td>
+</tr>
+<tr>
+<td>Enforce tier eligibility</td>
+<td>Store Purchasing Requirements</td>
+<td>Require spending of at least 40 or 100 before purchasing later rewards</td>
+</tr>
+<tr>
+<td>Translate purchases into progress</td>
+<td>Your trusted backend</td>
+<td>Validate fulfilled orders, sum spending, and publish the absolute total</td>
+</tr>
+</tbody>
+</table></div>
+<p>AGS owns the purchase and eligibility rules configured in its services. Your backend owns the cross-service rule that says which fulfilled purchases contribute to this particular deck.</p>
+<h3 id="where-native-season-pass-fits">Where native Season Pass fits</h3>
+<p>AGS also provides a native Season Pass service for XP-based tiers and rewards. It supports both automatic and manual reward claiming. A manual claim lets a player request an eligible reward; it does not by itself establish a separate wallet price for each claim. See the official <a href="https://docs.accelbyte.io/gaming-services/modules/online/season-pass/configuring-season-pass/">Season Pass configuration guide</a>.</p>
+<p>Signal Range uses priced catalog items because its central interaction is <strong>spend points on the reward you choose</strong>. A deck-specific spending statistic provides a direct eligibility value for those items.</p>
+<p>A hybrid could convert verified spending into Season Pass XP and gate Store items by season tier. That would add XP synchronization and season-lifecycle decisions. This guide uses Wallet + Store + Orders + Statistics to keep the spending rule direct.</p>
+<h2 id="3-prepare-identity-and-backend-access">3. Prepare identity and backend access</h2>
+<p>You need a test game namespace, Admin Portal access to configure its economy, a public IAM client for player login, and a confidential IAM client for trusted backend operations. The example uses a React/TypeScript client and a server-side worker. Its AGS calls use REST; no AGS SDK dependency is required by these excerpts.</p>
+<p>Use your own namespace, clients, and item IDs. The prototype's fixture IDs are not reusable configuration for another game.</p>
+<h3 id="separate-player-calls-from-trusted-calls">Separate player calls from trusted calls</h3>
+<div aria-label="Scrollable reference table" class="table-wrap" role="region" tabindex="0"><table>
+<thead>
+<tr>
+<th>Caller</th>
+<th>Authentication</th>
+<th>Operations in this example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Player client</td>
+<td>Player access token obtained through the public client's login flow</td>
+<td>Read catalog, wallet, entitlements, and spending; create and inspect the player's orders</td>
+</tr>
+<tr>
+<td>Trusted backend</td>
+<td>Confidential client credentials for a service token</td>
+<td>Read the verified player's order history; initialize and update their spending statistic</td>
+</tr>
+<tr>
+<td>Starter-funding backend</td>
+<td>Confidential client with the additional wallet permissions</td>
+<td>Credit demo points and inspect credit transactions for recovery</td>
+</tr>
+</tbody>
+</table></div>
+<p>Keep the confidential client secret in server environment settings. Player purchases continue to use the player's token even when a same-origin backend route forwards the request to AGS.</p>
+<p>Before reconciling or funding, verify the incoming player token and derive the user ID from the verified identity. The current backend checks the namespace, public client ID, and token lifetime. A request body is not an authoritative source of player identity or spending.</p>
+<h3 id="backend-permission-groups">Backend permission groups</h3>
+<p>For AGS Shared Cloud, configure these permission groups:</p>
+<div aria-label="Scrollable reference table" class="table-wrap" role="region" tabindex="0"><table>
+<thead>
+<tr>
+<th>Module / module ID</th>
+<th>Group / group ID</th>
+<th>Runtime actions</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Platform Store / <code>m_platform_store</code></td>
+<td>Order / <code>g_order</code></td>
+<td>READ</td>
+<td>Read orders for reconciliation</td>
+</tr>
+<tr>
+<td>Statistics / <code>m_statistics</code></td>
+<td>User’s Statistics Value / <code>g_user_statistics_value</code></td>
+<td>CREATE, READ, UPDATE</td>
+<td>Initialize and maintain player spending</td>
+</tr>
+<tr>
+<td>Platform Store / <code>m_platform_store</code></td>
+<td>Wallet / <code>g_wallet</code></td>
+<td>READ, UPDATE</td>
+<td>Optional automatic starter funding and transaction readback</td>
+</tr>
+</tbody>
+</table></div>
+<p>These are runtime permissions; catalog and statistic configuration use your authorized setup/admin access separately. The purchase reconciler does not need a separate permission to debit wallets or grant rewards: the player order performs the purchase.</p>
+<p>Confirm the required operations and available permission groups in your own environment. Private Cloud deployments can use resource/action permissions instead of this grouped representation. See the <a href="https://github.com/AccelByte/sa-signal-range/blob/main/prototype/README.md">current implementation README</a>.</p>
+<h2 id="4-configure-the-economy-and-tier-requirements">4. Configure the economy and tier requirements</h2>
+<p>Complete this configuration before wiring purchases. Keep the published catalog, client display metadata, and trusted backend's item mapping aligned.</p>
+<h3 id="41-create-a-points-currency">4.1 Create a points currency</h3>
+<p>Create a game-namespace virtual currency with these values:</p>
+<div aria-label="Scrollable reference table" class="table-wrap" role="region" tabindex="0"><table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Example value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Currency code</td>
+<td><code>RDP</code></td>
+</tr>
+<tr>
+<td>Currency type</td>
+<td><code>VIRTUAL</code></td>
+</tr>
+<tr>
+<td>Decimal places</td>
+<td><code>0</code></td>
+</tr>
+<tr>
+<td>Scope</td>
+<td>Your game namespace</td>
+</tr>
+</tbody>
+</table></div>
+<p>All prices and spending values in this tutorial are whole-number RDP amounts. The official <a href="https://docs.accelbyte.io/gaming-services/modules/online/store-catalog/currencies/manage-currencies/">currency guide</a> explains virtual-currency setup and namespace scope.</p>
+<h3 id="42-create-the-reward-catalog">4.2 Create the reward catalog</h3>
+<p>Create a draft store and a category for the deck, then configure these nine items:</p>
+<div aria-label="Scrollable reference table" class="table-wrap" role="region" tabindex="0"><table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Reward</th>
+<th style="text-align:right">Price in RDP</th>
+<th style="text-align:right">Required deck spending</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Field radio</td>
+<td style="text-align:right">10</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Pathfinder</td>
+<td style="text-align:right">20</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Ridge pack</td>
+<td style="text-align:right">30</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Pulse reader</td>
+<td style="text-align:right">10</td>
+<td style="text-align:right">40</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Nightwatch</td>
+<td style="text-align:right">20</td>
+<td style="text-align:right">40</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Sentinel</td>
+<td style="text-align:right">30</td>
+<td style="text-align:right">40</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Relay station</td>
+<td style="text-align:right">10</td>
+<td style="text-align:right">100</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Far sight</td>
+<td style="text-align:right">20</td>
+<td style="text-align:right">100</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Wayfarer</td>
+<td style="text-align:right">30</td>
+<td style="text-align:right">100</td>
+</tr>
+</tbody>
+</table></div>
+<p>For this example, use <code>INGAMEITEM</code> items with <code>DURABLE</code> entitlements, a per-user purchase limit of one, and quantity one in the order. Enable visibility and purchasing. Set the regional virtual-currency price, with no discounts, taxes, or fees in this teaching economy.</p>
+<p>Create items in a draft store and publish after configuration. Follow the official <a href="https://docs.accelbyte.io/gaming-services/modules/online/wallets-payments/how-to/create-items/">item creation guide</a> for the available fields and any prerequisite App item required by your setup.</p>
+<p>Record the resulting item IDs. The backend needs an immutable allowlist of items belonging to this deck; display names and client-supplied metadata are insufficient for attribution.</p>
+<figure class="tutorial-figure" id="figure-1"><a aria-label="Open Figure 1 at full resolution" href="docs/sa-content-studio/content/guide-images/portal-item.png" rel="noopener" target="_blank"><img alt="Sentinel catalog item with visibility and purchasing enabled, and View Configurations highlighted beside Purchasing Requirement." decoding="async" height="768" loading="eager" src="docs/sa-content-studio/content/guide-images/portal-item.png" width="901"/></a><figcaption><strong>Figure 1.</strong> Open Purchasing Requirement → View Configurations on the draft item to attach its spending condition.<span class="image-hint">Select the image to open it at full resolution.</span></figcaption></figure>
+<details class="config-details"><summary>View Sentinel’s complete catalog configuration</summary><figure class="tutorial-figure" id="figure-2"><a aria-label="Open Figure 2 at full resolution" href="docs/sa-content-studio/content/guide-images/portal-item-full.png" rel="noopener" target="_blank"><img alt="Full Sentinel configuration shows a Durable entitlement, per-account purchase limit of one, and a United States price of 30 RDP." decoding="async" height="2264" loading="lazy" src="docs/sa-content-studio/content/guide-images/portal-item-full.png" width="927"/></a><figcaption><strong>Figure 2.</strong> Sentinel is a one-time durable reward priced at 30 RDP. The overall purchase limit is unlimited (-1), while the per-account limit is one. Expand the image to inspect the complete item configuration.<span class="image-hint">Select the image to open it at full resolution.</span></figcaption></figure></details>
+<h3 id="43-create-the-spending-statistic">4.3 Create the spending statistic</h3>
+<p>Configure one spending statistic for this deck:</p>
+<div class="code-block"><div class="code-toolbar"><span class="code-label">JSON</span><button aria-label="Copy code example 1" aria-live="polite" class="copy-code" data-copy="" hidden="" type="button">Copy</button></div><pre aria-label="JSON code example" tabindex="0"><code class="language-json highlight" id="code-1"><span class="p">{</span>
+<span class="w">  </span><span class="nt">"statCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"raiderdecksignalrange01spent"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Signal Range Spending"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"defaultValue"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"minimum"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"maximum"</span><span class="p">:</span><span class="w"> </span><span class="mi">180</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"setBy"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SERVER"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"incrementOnly"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"isPublic"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"visibility"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SHOWALL"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"setAsGlobal"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><code>SERVER</code> makes spending a trusted write. The maximum is 180 because all nine one-time rewards total 180; revise that bound if you change the catalog. The visibility settings permit display/readback and do not authorize player writes. See <a href="https://docs.accelbyte.io/gaming-services/modules/online/statistics/implementing-server-authoritative-player-statistics/">server-authoritative Statistics</a>.</p>
+<p>The statistic configuration and each player's statistic item are separate resources. Initialize the player value to zero before relying on it for eligibility. The reconciler also handles a missing player statistic item and a concurrent initialization attempt.</p>
+<figure class="tutorial-figure" id="figure-3"><a aria-label="Open Figure 3 at full resolution" href="docs/sa-content-studio/content/statistics.png" rel="noopener" target="_blank"><img alt="AGS spending-statistic configuration: default and minimum zero, maximum 180, Increment Only enabled, Set As Global disabled, and Set By Server." decoding="async" height="835" loading="lazy" src="docs/sa-content-studio/content/statistics.png" width="1397"/></a><figcaption><strong>Figure 3.</strong> Spending is a server-written statistic with a 180-point bound for this nine-reward deck. The existing configured statistic is named “Raider Deck S01 Spent”; its code matches the example.<span class="image-hint">Select the image to open it at full resolution.</span></figcaption></figure>
+<h3 id="44-attach-native-purchase-conditions">4.4 Attach native purchase conditions</h3>
+<p>Tier 1 needs no spending condition. Attach the same statistic requirement to <strong>every</strong> Tier 2 item, and the corresponding 100-point requirement to <strong>every</strong> Tier 3 item.</p>
+<p>For Tier 2, use this item-update shape:</p>
+<div class="code-block"><div class="code-toolbar"><span class="code-label">JSON</span><button aria-label="Copy code example 2" aria-live="polite" class="copy-code" data-copy="" hidden="" type="button">Copy</button></div><pre aria-label="JSON code example" tabindex="0"><code class="language-json highlight" id="code-2"><span class="p">{</span>
+<span class="w">  </span><span class="nt">"purchaseCondition"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"conditionGroups"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"operator"</span><span class="p">:</span><span class="w"> </span><span class="s2">"and"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"predicates"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">          </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Deck spending"</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">"predicateType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"StatisticCodePredicate"</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"raiderdecksignalrange01spent"</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">"comparison"</span><span class="p">:</span><span class="w"> </span><span class="s2">"isGreaterThanOrEqual"</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"40"</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">]</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Use <code>"value": "100"</code> for Tier 3. Use the singular <code>value</code> field for this statistic predicate.</p>
+<p>In the Admin Portal, open a draft-store item's purchasing requirement configuration, choose Statistic Code, select the spending statistic, and use “greater than or equal” with the tier threshold. Save the requirement and publish the configured store. Follow <a href="https://docs.accelbyte.io/gaming-services/modules/online/wallets-payments/how-to/configure-purchasing-requirements/">Configure purchasing requirements</a> for the current portal controls.</p>
+<p>The UI can hide or disable inaccessible purchases, but the native item condition is what rejects a bypassed public purchase request. Make the published requirement part of your acceptance tests.</p>
+<figure class="tutorial-figure" id="figure-4"><a aria-label="Open Figure 4 at full resolution" href="docs/sa-content-studio/content/purchase-req-t2.png" rel="noopener" target="_blank"><img alt="Tier 2 purchase requirement uses Statistic Code raiderdecksignalrange01spent, Is Greater Than Or Equal, and value 40." decoding="async" height="266" loading="lazy" src="docs/sa-content-studio/content/purchase-req-t2.png" width="898"/></a><figcaption><strong>Figure 4.</strong> Tier 2 rewards require deck spending of at least 40 points.<span class="image-hint">Select the image to open it at full resolution.</span></figcaption></figure>
+<figure class="tutorial-figure" id="figure-5"><a aria-label="Open Figure 5 at full resolution" href="docs/sa-content-studio/content/purchase-req-t3.png" rel="noopener" target="_blank"><img alt="Tier 3 purchase requirement uses the same spending statistic, Is Greater Than Or Equal, and value 100." decoding="async" height="309" loading="lazy" src="docs/sa-content-studio/content/purchase-req-t3.png" width="898"/></a><figcaption><strong>Figure 5.</strong> Tier 3 rewards use the same rule with a 100-point threshold. Apply the corresponding requirement to every item in its tier.<span class="image-hint">Select the image to open it at full resolution.</span></figcaption></figure>
+<h3 id="45-preserve-the-decks-identity">4.5 Preserve the deck's identity</h3>
+<p>Keep a server-side mapping of the deck ID, currency, statistic code, and its original item IDs and fixed prices. Here is the shape to adapt:</p>
+<div class="code-block"><div class="code-toolbar"><span class="code-label">TypeScript</span><button aria-label="Copy code example 3" aria-live="polite" class="copy-code" data-copy="" hidden="" type="button">Copy</button></div><pre aria-label="TypeScript code example" tabindex="0"><code class="language-ts highlight" id="code-3"><span class="c1">// Configuration example. Replace the placeholders with your created item IDs.</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">season</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="s1">'signal-range-01'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">namespace</span><span class="o">:</span><span class="w"> </span><span class="s1">'YOUR_GAME_NAMESPACE'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">currency</span><span class="o">:</span><span class="w"> </span><span class="s1">'RDP'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">statCode</span><span class="o">:</span><span class="w"> </span><span class="s1">'raiderdecksignalrange01spent'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">items</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">YOUR_FIELD_RADIO_ITEM_ID</span><span class="o">:</span><span class="w"> </span><span class="kt">10</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">YOUR_PATHFINDER_ITEM_ID</span><span class="o">:</span><span class="w"> </span><span class="kt">20</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">YOUR_RIDGE_PACK_ITEM_ID</span><span class="o">:</span><span class="w"> </span><span class="kt">30</span><span class="p">,</span>
+<span class="w">    </span><span class="c1">// Add all six Tier 2 and Tier 3 item IDs and their prices.</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="p">};</span>
+</code></pre></div>
+<p>Here, “season” is the application's deck identity. It does not mean that a native AGS Season Pass season has been created. The current prototype has one deck and no timed season-expiry enforcement.</p>
+<p>For later decks, preserve old mappings and use distinct item IDs and spending codes. This implementation attributes orders through item membership; reusing an item ID across decks would make that attribution ambiguous.</p>
+<h2 id="5-connect-the-player-and-prepare-points">5. Connect the player and prepare points</h2>
+<p>The current demo creates and stores a random demo Device ID, logs in through the public IAM client, and keeps the resulting access token in memory. Returning with the same saved demo credential restores the same AGS player.</p>
+<p>The flow is:</p>
+<ol>
+<li>Generate or retrieve the browser's demo Device ID.</li>
+<li>Call the local login route, which requests an AGS Device ID player token.</li>
+<li>Verify the player identity on the backend.</li>
+<li>Prepare the player's starter points.</li>
+<li>Reconcile spending and load the authoritative deck state.</li>
+</ol>
+<p>Device ID continuity is a demo convenience. Clearing browser storage can lose the credential; it does not provide cross-device recovery or a full production account lifecycle. Use your game's supported account/platform login flow for the player experience you need.</p>
+<h3 id="demo-funding-versus-gameplay-earning">Demo funding versus gameplay earning</h3>
+<p>The live Site is configured to grant <strong>180 starter points per player and deck</strong>. This makes all nine rewards affordable while still requiring purchases to unlock tiers. It does not implement gameplay-based earning.</p>
+<p>The funding route verifies the player, reserves a grant keyed by namespace/deck/player, and credits AGS Wallet. A D1 database stores only starter-grant reservations and completion state. <strong>Purchase spending and purchase history remain in AGS Orders.</strong></p>
+<p>The reservation prevents concurrent requests from independently issuing the same starter credit. If a credit response is lost, the backend searches AGS wallet transactions for the matching reason and amount before completing the reservation. An unresolved outcome remains blocked; a crash before credit submission can require operator review. This is not a general exactly-once wallet API guarantee.</p>
+<p>For a simpler integration, fund a disposable player through your authorized test setup and omit the automatic grant route. For gameplay earning, have trusted game logic validate the completed activity and award points; do not accept an arbitrary point amount from a player request.</p>
+<h2 id="6-load-the-deck-from-ags">6. Load the deck from AGS</h2>
+<p>After authentication and initialization, load four pieces of state:</p>
+<div aria-label="Scrollable reference table" class="table-wrap" role="region" tabindex="0"><table>
+<thead>
+<tr>
+<th>Read</th>
+<th>Use in the deck</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RDP wallet</td>
+<td>Display available points and check affordability</td>
+</tr>
+<tr>
+<td>Active entitlements for deck item IDs</td>
+<td>Mark owned rewards</td>
+</tr>
+<tr>
+<td>Spending statistic</td>
+<td>Display progress and tier access</td>
+</tr>
+<tr>
+<td>Published catalog items and regional prices</td>
+<td>Display the offers that AGS will sell</td>
+</tr>
+</tbody>
+</table></div>
+<p>The current client reads these concurrently, paginates ownership, and checks that each catalog item matches the fixed-price durable-item configuration. It stops purchases if that contract differs. Reading only the first entitlement page can produce an incorrect collection display.</p>
+<p>Every reward card can be opened for inspection, including locked and already-owned rewards. <strong>Confirm purchase</strong> is enabled only when the tier is accessible, the reward is unowned and affordable, and there is no unresolved purchase or other operation in progress. Locked reward details explain the remaining spending requirement. This UI logic improves feedback. AGS still evaluates the configured purchase conditions when the order is submitted.</p>
+<p>Display “available,” “spent,” and “owned” separately. When spending publication is delayed, show that progress is processing and provide a retry action. An entitlement appearing does not prove the spending statistic has caught up.</p>
+<p>The example uses a narrow same-origin player bridge to avoid depending on a direct browser-to-AGS Commerce CORS configuration. That bridge verifies the player, allowlists supported paths and request bodies, and forwards with the player's token. It is specific to this deployment; a client with correctly configured direct AGS access can use the equivalent player API calls.</p>
+<p>Source: <a href="https://github.com/AccelByte/sa-signal-range/blob/main/prototype/lib/ags-deck-client.ts">AGS client adapter</a> and <a href="https://github.com/AccelByte/sa-signal-range/blob/main/prototype/app/api/deck/player/route.ts">player bridge</a>.</p>
+<h3 id="navigate-the-reward-deck">Navigate the reward deck</h3>
+<p>The screenshots illustrate <strong>Offline demo</strong>, which starts with 60 points and stores progress in the browser.</p>
+<figure class="tutorial-figure" id="figure-6"><a aria-label="Open Figure 6 at full resolution" href="docs/sa-content-studio/content/guide-images/01-offline-deck.jpg" rel="noopener" target="_blank"><img alt="Signal Range starting offline deck shows 60 available points, zero spending, no collected rewards, and the three tier tabs." decoding="async" height="1051" loading="lazy" src="docs/sa-content-studio/content/guide-images/01-offline-deck.jpg" width="1265"/></a><figcaption><strong>Figure 6.</strong> The wallet, spending, and collection count answer separate questions. First contact is accessible; Perimeter and Last signal are locked. These are the offline demo's 60-point starting values.<span class="image-hint">Select the image to open it at full resolution.</span></figcaption></figure>
+<p>The interface presents rewards as an outpost equipment collection:</p>
+<ul>
+<li><strong>Reward deck</strong> shows three rewards from the selected tier. The tabs are <strong>01 First contact</strong>, <strong>02 Perimeter</strong>, and <strong>03 Last signal</strong>. Selecting a locked tier lets the player preview its rewards; it does not unlock purchasing.</li>
+<li><strong>Collection</strong> shows only owned rewards across all tiers. Its counter and each card's <strong>ACQUIRED</strong> label reflect ownership. An empty collection offers <strong>Explore the deck</strong> to return to reward selection.</li>
+<li>The wallet at the top shows available points. <strong>Season spending</strong> below the cards shows cumulative spending, the next access threshold, and the total number collected. Funding points does not advance this progress.</li>
+<li>The reward dialog shows cost, available balance, and the balance after purchase before confirmation. Ownership can appear while spending is still processing; wait for the progress update before expecting the next tier to open.</li>
+<li>In <strong>Live AGS</strong>, <strong>Refresh progress</strong> rereads and reconciles service state. In <strong>Offline demo</strong>, <strong>Earn 40 points</strong> adds mock wallet points and <strong>Reset demo</strong> restores the local starting state. These offline controls never fund an AGS player.</li>
+</ul>
+<figure class="tutorial-figure" id="figure-7"><a aria-label="Open Figure 7 at full resolution" href="docs/sa-content-studio/content/guide-images/02-locked-reward.jpg" rel="noopener" target="_blank"><img alt="Pulse reader details show a 10-point cost and 60-point balance, but purchase confirmation is disabled until another 40 points have been spent." decoding="async" height="720" loading="lazy" src="docs/sa-content-studio/content/guide-images/02-locked-reward.jpg" width="1280"/></a><figcaption><strong>Figure 7.</strong> A player can afford this reward and inspect it while its tier is locked. Affordability does not replace the spending requirement.<span class="image-hint">Select the image to open it at full resolution.</span></figcaption></figure>
+<p>The outpost backdrop and expedition scout frame the reward collection. Ownership changes when a selected reward is purchased.</p>
+<p>For a credential-free walkthrough, choose <strong>Offline demo</strong>. A fresh or reset demo starts with <strong>60 available, zero spent, and zero owned</strong>. Buy Field radio for 10 and Ridge pack for 30; after the brief progress delay, expect <strong>20 available, 40 spent, two owned</strong>, and Tier 2 access. Pathfinder can remain unowned. Open Collection to inspect those two rewards, then use Earn 40 points: the wallet rises to 60 while spending stays 40 and ownership stays two.</p>
+<h2 id="7-purchase-a-selected-reward">7. Purchase a selected reward</h2>
+<figure class="tutorial-figure" id="figure-8"><a aria-label="Open Figure 8 at full resolution" href="docs/sa-content-studio/content/guide-images/03-purchase-confirmation.jpg" rel="noopener" target="_blank"><img alt="Field radio confirmation shows a 10-point cost, 60 available points, a 50-point projected balance, and an enabled confirmation button." decoding="async" height="720" loading="lazy" src="docs/sa-content-studio/content/guide-images/03-purchase-confirmation.jpg" width="1280"/></a><figcaption><strong>Figure 8.</strong> The player reviews the price and projected wallet balance before confirming. Confirming a purchase submits the selected reward; the AGS implementation follows below.<span class="image-hint">Select the image to open it at full resolution.</span></figcaption></figure>
+<p>A reward purchase belongs to the authenticated player. Let the AGS order perform the currency purchase and reward fulfillment; a separate wallet debit followed by a separate item grant would add another failure boundary.</p>
+<p>The current adapter's order body is:</p>
+<div class="code-block"><div class="code-toolbar"><span class="code-label">TypeScript</span><button aria-label="Copy code example 4" aria-live="polite" class="copy-code" data-copy="" hidden="" type="button">Copy</button></div><pre aria-label="TypeScript code example" tabindex="0"><code class="language-ts highlight" id="code-4"><span class="c1">// Excerpt from the live client adapter; the request helper forwards the player token.</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">created</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">request</span><span class="o">&lt;</span><span class="nx">LiveOrder</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span><span class="w"> </span><span class="sb">`</span><span class="si">${</span><span class="nx">platform</span><span class="si">}</span><span class="sb">/users/</span><span class="si">${</span><span class="nb">encodeURIComponent</span><span class="p">(</span><span class="nx">s</span><span class="p">.</span><span class="nx">userId</span><span class="p">)</span><span class="si">}</span><span class="sb">/orders`</span><span class="p">,</span><span class="w"> </span><span class="s1">'Create order'</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">itemId</span><span class="o">:</span><span class="w"> </span><span class="kt">DECK_ITEMS</span><span class="p">[</span><span class="nx">rewardId</span><span class="p">],</span><span class="w"> </span><span class="nx">quantity</span><span class="o">:</span><span class="w"> </span><span class="kt">1</span><span class="p">,</span><span class="w"> </span><span class="nx">currencyCode</span><span class="o">:</span><span class="w"> </span><span class="kt">AGS.currency</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">price</span><span class="o">:</span><span class="w"> </span><span class="kt">reward.cost</span><span class="p">,</span><span class="w"> </span><span class="nx">discountedPrice</span><span class="o">:</span><span class="w"> </span><span class="kt">reward.cost</span><span class="p">,</span><span class="w"> </span><span class="nx">region</span><span class="o">:</span><span class="w"> </span><span class="s1">'US'</span><span class="p">,</span><span class="w"> </span><span class="nx">language</span><span class="o">:</span><span class="w"> </span><span class="s1">'en'</span><span class="p">,</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>The underlying AGS operation is:</p>
+<div class="code-block"><div class="code-toolbar"><span class="code-label">REST endpoint</span><button aria-label="Copy code example 5" aria-live="polite" class="copy-code" data-copy="" hidden="" type="button">Copy</button></div><pre aria-label="REST endpoint code example" tabindex="0"><code class="language-text highlight" id="code-5">POST /platform/public/namespaces/{namespace}/users/{userId}/orders
+Authorization: Bearer {playerAccessToken}
+Content-Type: application/json
+</code></pre></div>
+<p>For this fixed-price example, <code>price</code> and <code>discountedPrice</code> are equal. These client fields are part of the purchase request; they are not evidence the backend can use to credit spending. Use the resulting AGS order record for that.</p>
+<p>The client purchase sequence is:</p>
+<ol>
+<li>Reconcile existing progress and refresh authoritative state.</li>
+<li>Reject a local attempt if another order is pending or unresolved.</li>
+<li>Check the selected reward, ownership, threshold, and balance for useful feedback.</li>
+<li>Save an unresolved-submission marker before sending the order.</li>
+<li>Create the order and save its returned order number.</li>
+<li>Inspect order status; do not assume order creation means fulfillment.</li>
+<li>Reconcile spending, refresh ownership and balance, and clear the marker only after the result is confirmed.</li>
+</ol>
+<p>The marker survives reload and helps correlate an uncertain request. It has no authority over balance, spending, or ownership. The server derives those values from AGS.</p>
+<h2 id="8-derive-spending-from-fulfilled-orders">8. Derive spending from fulfilled orders</h2>
+<p>The backend must answer a precise question: <strong>How much has this player paid for fulfilled orders belonging to this deck?</strong></p>
+<p>Incrementing a stat after every callback is fragile. The callback might arrive twice, fail after publication, or never arrive. The current backend instead recomputes an absolute total from order history.</p>
+<h3 id="81-accept-a-reconciliation-request">8.1 Accept a reconciliation request</h3>
+<p>The client calls <code>POST /api/deck/reconcile</code> with its player token and either <code>{}</code> or an optional <code>orderNo</code>. The route verifies identity and permits only that hint field. It does not accept a user ID, price, or spending increment from the browser.</p>
+<p>The order number is only a lookup hint. The backend verifies that the corresponding AGS order belongs to the authenticated player, namespace, and deck.</p>
+<h3 id="82-read-authoritative-order-history">8.2 Read authoritative order history</h3>
+<p>Using its service token, the backend queries orders separately for each allowlisted item:</p>
+<div class="code-block"><div class="code-toolbar"><span class="code-label">REST endpoint</span><button aria-label="Copy code example 6" aria-live="polite" class="copy-code" data-copy="" hidden="" type="button">Copy</button></div><pre aria-label="REST endpoint code example" tabindex="0"><code class="language-text highlight" id="code-6">GET /platform/admin/namespaces/{namespace}/users/{userId}/orders
+    ?itemId={deckItemId}&amp;limit=100&amp;offset=0
+</code></pre></div>
+<p>It follows limit/offset pagination until each query is complete. It fails rather than publishing a partial scan if a page is unavailable, malformed, or exceeds the example's 1,000-record-per-item bound.</p>
+<p>When a newly created order number is available, a direct order read can be newer than the indexed history query. The reconciler replaces the same order's history snapshot with that direct response, or adds it if missing, before validation and deduplication.</p>
+<h3 id="83-validate-before-counting">8.3 Validate before counting</h3>
+<p>The receipt validator checks:</p>
+<ul>
+<li>The order belongs to the verified player and namespace.</li>
+<li>The item ID belongs to the immutable deck mapping.</li>
+<li>Status is <code>FULFILLED</code>.</li>
+<li>Quantity is one and currency is the expected whole-number virtual currency.</li>
+<li>The order's payment fields agree with this deck's fixed price and zero discount/deduction/tax/fee contract.</li>
+<li>The item snapshot matches the expected durable, one-per-player in-game item.</li>
+</ul>
+<p>Unrelated items and unfulfilled orders contribute nothing. A fulfilled deck order that violates the fixed-price contract stops reconciliation for operator review.</p>
+<p>For this specific economy, the validated <code>discountedPrice</code> equals the paid amount: deduction and fee fields must be zero and the totals must agree. Do not generalize this validator to discounts, mixed payments, or refunds without defining their contribution rules.</p>
+<p>Ownership alone is insufficient for spending: an entitlement could have been granted through another route without a deck purchase.</p>
+<h3 id="84-deduplicate-and-sum">8.4 Deduplicate and sum</h3>
+<p>This is the current reconciliation core:</p>
+<div class="code-block"><div class="code-toolbar"><span class="code-label">TypeScript</span><button aria-label="Copy code example 7" aria-live="polite" class="copy-code" data-copy="" hidden="" type="button">Copy</button></div><pre aria-label="TypeScript code example" tabindex="0"><code class="language-ts highlight" id="code-7"><span class="k">export</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">reconcileOrders</span><span class="p">(</span><span class="nx">userId</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="nx">season</span><span class="o">:</span><span class="w"> </span><span class="kt">Season</span><span class="p">,</span><span class="w"> </span><span class="nx">orders</span><span class="o">:</span><span class="w"> </span><span class="kt">Order</span><span class="p">[],</span><span class="w"> </span><span class="nx">port</span><span class="o">:</span><span class="w"> </span><span class="kt">SpendingPort</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">contributions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nb">Map</span><span class="o">&lt;</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="nx">Receipt</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">items</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nb">Set</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kd">const</span><span class="w"> </span><span class="nx">order</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="nx">orders</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">next</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">receipt</span><span class="p">(</span><span class="nx">order</span><span class="p">,</span><span class="w"> </span><span class="nx">userId</span><span class="p">,</span><span class="w"> </span><span class="nx">season</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">next</span><span class="p">)</span><span class="w"> </span><span class="k">continue</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">existing</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">contributions</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">next</span><span class="p">.</span><span class="nx">orderNo</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">existing</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">existing</span><span class="p">.</span><span class="nx">itemId</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="nx">next</span><span class="p">.</span><span class="nx">itemId</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nx">existing</span><span class="p">.</span><span class="nx">paid</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="nx">next</span><span class="p">.</span><span class="nx">paid</span><span class="p">)</span><span class="w"> </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">ReconcileError</span><span class="p">(</span><span class="s1">'Conflicting order history. Operator review is required.'</span><span class="p">);</span>
+<span class="w">      </span><span class="k">continue</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">items</span><span class="p">.</span><span class="nx">has</span><span class="p">(</span><span class="nx">next</span><span class="p">.</span><span class="nx">itemId</span><span class="p">))</span><span class="w"> </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">ReconcileError</span><span class="p">(</span><span class="s1">'Multiple fulfilled orders for a one-time reward. Operator review is required.'</span><span class="p">);</span>
+<span class="w">    </span><span class="nx">contributions</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">next</span><span class="p">.</span><span class="nx">orderNo</span><span class="p">,</span><span class="w"> </span><span class="nx">next</span><span class="p">);</span>
+<span class="w">    </span><span class="nx">items</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">next</span><span class="p">.</span><span class="nx">itemId</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">total</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[...</span><span class="nx">contributions</span><span class="p">.</span><span class="nx">values</span><span class="p">()].</span><span class="nx">reduce</span><span class="p">((</span><span class="nx">sum</span><span class="p">,</span><span class="w"> </span><span class="nx">order</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">sum</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">order</span><span class="p">.</span><span class="nx">paid</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="p">);</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nb">Number</span><span class="p">.</span><span class="nx">isSafeInteger</span><span class="p">(</span><span class="nx">total</span><span class="p">))</span><span class="w"> </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">ReconcileError</span><span class="p">(</span><span class="s1">'Invalid spending total.'</span><span class="p">);</span>
+<span class="w">  </span><span class="c1">// Always publish the absolute history-derived total, including replay and empty history.</span>
+<span class="w">  </span><span class="c1">// MAX tolerates older indexed snapshots without lowering already projected progress.</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">projected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">port</span><span class="p">.</span><span class="nx">publishMax</span><span class="p">(</span><span class="nx">total</span><span class="p">);</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nb">Number</span><span class="p">.</span><span class="nx">isSafeInteger</span><span class="p">(</span><span class="nx">projected</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nx">projected</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="nx">total</span><span class="p">)</span><span class="w"> </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">ReconcileError</span><span class="p">(</span><span class="s1">'Spending projection is still processing. Retry progress.'</span><span class="p">);</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">total</span><span class="p">,</span><span class="w"> </span><span class="nx">projected</span><span class="p">,</span><span class="w"> </span><span class="nx">orderCount</span><span class="o">:</span><span class="w"> </span><span class="kt">contributions.size</span><span class="w"> </span><span class="p">};</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><code>receipt</code> is the full validator in <a href="https://github.com/AccelByte/sa-signal-range/blob/main/prototype/lib/order-spending.ts">order-spending.ts</a>. <code>SpendingPort</code> is the prototype's own interface, not an AGS SDK class.</p>
+<p>The order-number map counts a repeated snapshot once. Conflicting snapshots are rejected. A second fulfilled order for the same one-time item is also rejected rather than silently treated as another valid purchase.</p>
+<p>The map exists only during reconciliation. AGS Orders retains the purchase history; no separate Cloud Save or D1 purchase ledger is used.</p>
+<h3 id="85-publish-the-total-with-max">8.5 Publish the total with MAX</h3>
+<p>The trusted backend uses this Statistics update:</p>
+<div class="code-block"><div class="code-toolbar"><span class="code-label">REST endpoint</span><button aria-label="Copy code example 8" aria-live="polite" class="copy-code" data-copy="" hidden="" type="button">Copy</button></div><pre aria-label="REST endpoint code example" tabindex="0"><code class="language-text highlight" id="code-8">PUT /social/v2/admin/namespaces/{namespace}/users/{userId}/stats/{statCode}/statitems/value
+Authorization: Bearer {serviceAccessToken}
+Content-Type: application/json
+</code></pre></div>
+<div class="code-block"><div class="code-toolbar"><span class="code-label">JSON</span><button aria-label="Copy code example 9" aria-live="polite" class="copy-code" data-copy="" hidden="" type="button">Copy</button></div><pre aria-label="JSON code example" tabindex="0"><code class="language-json highlight" id="code-9"><span class="p">{</span>
+<span class="w">  </span><span class="nt">"updateStrategy"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MAX"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">40</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>The response's <code>currentValue</code> is the projected total. If the player's stat item does not exist, the backend initializes it through the admin stat-item creation route and retries; a concurrent create conflict is handled by retrying the update.</p>
+<p>Why MAX? Suppose one history read derives 40 and a newer read derives 60. If publication arrives as 60 followed by 40, MAX keeps 60. Publishing 60 again also keeps 60 instead of adding another 60.</p>
+<p>This assumes spending never decreases. It works for the tutorial's no-refund economy. A refund or downward correction needs another projection policy.</p>
+<p>Once Statistics reflects 40, native purchase conditions can allow Tier 2 purchases. The client rereads the statistic, wallet, and entitlements to show the result. Commerce fulfillment and statistic publication are separate operations, so a short processing state is part of the flow.</p>
+<figure class="tutorial-figure" id="figure-9"><a aria-label="Open Figure 9 at full resolution" href="docs/sa-content-studio/content/guide-images/04-tier-two-access.jpg" rel="noopener" target="_blank"><img alt="After buying Field radio and Ridge pack in Offline demo, the deck shows 20 available, 40 spent, two collected, and Perimeter accessible while Pathfinder remains unowned." decoding="async" height="1051" loading="lazy" src="docs/sa-content-studio/content/guide-images/04-tier-two-access.jpg" width="1265"/></a><figcaption><strong>Figure 9.</strong> Spending 40 points opens Tier 2 while Pathfinder remains unowned. Starting with 60 points leaves 20 available after these two purchases; completing Tier 1 is not required.<span class="image-hint">Select the image to open it at full resolution.</span></figcaption></figure>
+<h2 id="9-recover-from-interrupted-requests">9. Recover from interrupted requests</h2>
+<p>Retries should inspect authoritative state before deciding whether another purchase is needed.</p>
+<div aria-label="Scrollable reference table" class="table-wrap" role="region" tabindex="0"><table>
+<thead>
+<tr>
+<th>Failure</th>
+<th>Recovery</th>
+<th>What must not happen</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Purchase fulfills, but the client callback is lost</td>
+<td>Reconnect/reconcile reads order history, finds the purchase, and publishes spending</td>
+<td>Charging again because the callback was missing</td>
+</tr>
+<tr>
+<td>History read succeeds, Statistics update fails</td>
+<td>A later reconciliation recomputes the total and retries MAX</td>
+<td>Adding the full total as a new increment</td>
+</tr>
+<tr>
+<td>Statistics update succeeds, response is lost</td>
+<td>Repeating the same absolute MAX update is safe for progress</td>
+<td>Counting the purchase twice</td>
+</tr>
+<tr>
+<td>Create-order response times out</td>
+<td>Preserve the unresolved marker and inspect orders and ownership</td>
+<td>Blindly repeat the order POST</td>
+</tr>
+<tr>
+<td>Order is still processing</td>
+<td>Display pending state, inspect status, and reconcile later</td>
+<td>Count an unfulfilled order as spending</td>
+</tr>
+<tr>
+<td>Catalog or fulfilled-order payment contract differs</td>
+<td>Stop purchasing/reconciliation and request review</td>
+<td>Guess the contribution from the current UI price</td>
+</tr>
+</tbody>
+</table></div>
+<p>The client reconciles on connection, before and after purchases, on return to the page or network, and through an explicit retry control. The optional order number helps read a recent order directly, but history discovery also handles a missing callback.</p>
+<p>An ambiguous create-order response deserves special attention. A timeout means the client does not know whether the order was accepted. If history and ownership cannot establish an outcome, the current prototype keeps purchasing blocked for review. One-time purchase limits are useful protection, but they do not constitute a general order-create idempotency guarantee.</p>
+<p>Recovery in this implementation requires a request. A player who never returns can leave spending publication stale until an authorized reconciliation runs. A background trigger, such as an AGS Extend Event Handler reacting to fulfilled-order events, is a possible extension. No Extend handler is deployed in the current prototype; such a change needs its own retry and delivery design.</p>
+<h2 id="10-verify-the-complete-loop">10. Verify the complete loop</h2>
+<p>Use a disposable player and test the underlying service behavior as well as the rendered deck. A disabled button alone does not prove the purchase rule is enforced.</p>
+<h3 id="acceptance-checklist">Acceptance checklist</h3>
+<div aria-label="Scrollable reference table" class="table-wrap" role="region" tabindex="0"><table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Expected result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fresh current-demo player</td>
+<td>180 available, zero spent, no owned rewards</td>
+</tr>
+<tr>
+<td>Reconnect after initial funding</td>
+<td>Same player restored; no second starter grant</td>
+</tr>
+<tr>
+<td>Buy Field radio and Ridge pack</td>
+<td>140 available, 40 spent, two owned; Tier 2 accessible</td>
+</tr>
+<tr>
+<td>Leave Pathfinder unowned</td>
+<td>Access remains based on spending, not completion of earlier rewards</td>
+</tr>
+<tr>
+<td>Add points without purchasing</td>
+<td>Available balance rises; spending and ownership do not change</td>
+</tr>
+<tr>
+<td>Direct locked-item purchase</td>
+<td>AGS rejects it even when the UI is bypassed</td>
+</tr>
+<tr>
+<td>Isolated threshold values 39/40 and 99/100</td>
+<td>Rejected below the threshold; eligible at the threshold if other conditions are met</td>
+</tr>
+<tr>
+<td>Purchase an owned or unaffordable item</td>
+<td>Rejected without an additional successful purchase</td>
+</tr>
+<tr>
+<td>Reconcile repeatedly</td>
+<td>Spending remains the same</td>
+</tr>
+<tr>
+<td>Publish concurrent totals 40 and 60 in reverse order</td>
+<td>Final projected spending remains 60</td>
+</tr>
+<tr>
+<td>Lose a callback or stat response</td>
+<td>Reconciliation confirms/rebuilds progress without repeating payment</td>
+</tr>
+<tr>
+<td>Change player</td>
+<td>No previous player's wallet, progress, or ownership is displayed</td>
+</tr>
+<tr>
+<td>Invalid or expired token</td>
+<td>Protected backend calls are rejected</td>
+</tr>
+<tr>
+<td>Buy all nine rewards from a 180-point starting balance</td>
+<td>Zero available, 180 spent, nine fulfilled unique reward orders and nine owned rewards</td>
+</tr>
+</tbody>
+</table></div>
+<p>Run these checks in your test namespace to verify service behavior as well as UI feedback.</p>
+<h3 id="try-the-offline-walkthrough">Try the offline walkthrough</h3>
+<figure class="tutorial-figure" id="figure-10"><a aria-label="Open Figure 10 at full resolution" href="docs/sa-content-studio/content/guide-images/05-owned-collection.jpg" rel="noopener" target="_blank"><img alt="Collection view displays only the acquired Field radio and Ridge pack, with 20 available points, 40 season spending, and two of nine rewards collected." decoding="async" height="1008" loading="lazy" src="docs/sa-content-studio/content/guide-images/05-owned-collection.jpg" width="1265"/></a><figcaption><strong>Figure 10.</strong> Collection filters by ownership across the deck. Spending opens access to later rewards; it does not automatically acquire them. This offline collection contains exactly the two chosen rewards.<span class="image-hint">Select the image to open it at full resolution.</span></figcaption></figure>
+<p>Before testing services, use Offline demo to check navigation and feedback:</p>
+<div aria-label="Scrollable reference table" class="table-wrap" role="region" tabindex="0"><table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Expected result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Reset demo</td>
+<td>60 available, zero spent, zero owned</td>
+</tr>
+<tr>
+<td>Select Perimeter and open Pulse reader</td>
+<td>Details open; confirmation is disabled with a 40-point spending requirement</td>
+</tr>
+<tr>
+<td>Open Collection before purchasing</td>
+<td>Empty collection with Explore the deck</td>
+</tr>
+<tr>
+<td>Buy Field radio and Ridge pack</td>
+<td>20 available, then 40 spent after the delay; two owned and Tier 2 accessible</td>
+</tr>
+<tr>
+<td>Open Collection after purchasing</td>
+<td>Only the two acquired rewards appear</td>
+</tr>
+<tr>
+<td>Earn 40 points</td>
+<td>60 available; spending remains 40 and ownership remains two</td>
+</tr>
+<tr>
+<td>Reload and select Offline demo again</td>
+<td>Saved mock wallet, spending, and ownership return in the same browser</td>
+</tr>
+</tbody>
+</table></div>
+<p>Use the offline walkthrough to check navigation and feedback, then run the service checks against AGS.</p>
+<h3 id="automated-verification">Automated verification</h3>
+<p>The automated tests cover order validation, history deduplication, reconciliation failures, identity boundaries, and starter-grant recovery using simulated service responses. Run them with the commands below.</p>
+<p>Run the service acceptance checks with a disposable player after configuring your test namespace.</p>
+<h2 id="11-adapt-the-design-for-your-game">11. Adapt the design for your game</h2>
+<p>Signal Range is intentionally bounded: one deck, nine one-time durable rewards, fixed prices, whole-number virtual currency, and no refunds. These decisions make the spending rule easy to validate.</p>
+<p>Before expanding it, resolve the changes that affect accounting:</p>
+<div aria-label="Scrollable reference table" class="table-wrap" role="region" tabindex="0"><table>
+<thead>
+<tr>
+<th>Change</th>
+<th>Decision needed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Earn points through gameplay</td>
+<td>Define trusted completion validation, award amounts, and duplicate-award recovery</td>
+</tr>
+<tr>
+<td>Discounts or multiple currencies</td>
+<td>Define the paid amount/currency that contributes to progress and update validation</td>
+</tr>
+<tr>
+<td>Refunds or revocations</td>
+<td>Decide whether progress is reduced, retained, or corrected; MAX cannot reduce it</td>
+</tr>
+<tr>
+<td>Repeatable or consumable rewards</td>
+<td>Define a card/purchase identity that permits repeats without duplicate ambiguity</td>
+</tr>
+<tr>
+<td>Multiple decks</td>
+<td>Maintain distinct attribution and progress values; preserve old mappings</td>
+</tr>
+<tr>
+<td>Timed deck availability</td>
+<td>Enforce start/end rules in an authoritative purchase path; UI timers alone are insufficient</td>
+</tr>
+<tr>
+<td>Larger transaction histories</td>
+<td>Validate query cost, pagination strategy, limits, and retention before relying on full-history reconstruction</td>
+</tr>
+<tr>
+<td>Unattended progression</td>
+<td>Add a supported background processing trigger and verify recovery</td>
+</tr>
+<tr>
+<td>Production accounts</td>
+<td>Establish account linking, recovery, and supported platform login flows</td>
+</tr>
+</tbody>
+</table></div>
+<p>Order-history retention is a practical boundary. MAX can preserve a previously published high-water mark when an indexed read is stale; it cannot reconstruct an unprojected order that is permanently unavailable. Confirm the history lifecycle for the length and scale of your season.</p>
+<p>The reusable design is the separation of responsibilities: AGS processes and validates configured purchases; trusted code derives deck spending from verified transactions; AGS purchase conditions use that progress to control access to later items.</p>
+<h2 id="12-explore-the-implementation">12. Explore the implementation</h2>
+<p>Use <code>prototype/</code> for the current UI, automatic login, and starter grants. The GitHub Pages build uses the same UI with local demo state. Select <strong>Tutorial</strong> in the demo to read this guide, or <strong>Live AGS</strong> to open the server-backed game.</p>
+<div aria-label="Scrollable reference table" class="table-wrap" role="region" tabindex="0"><table>
+<thead>
+<tr>
+<th>Start here</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/AccelByte/sa-signal-range/blob/main/prototype/README.md">Current README</a></td>
+<td>Runtime configuration, starter-grant behavior, and local setup</td>
+</tr>
+<tr>
+<td><a href="https://github.com/AccelByte/sa-signal-range/blob/main/prototype/app/page.tsx">Page controller</a></td>
+<td>Mode, connection, purchases, and progress state</td>
+</tr>
+<tr>
+<td><a href="https://github.com/AccelByte/sa-signal-range/blob/main/prototype/components/deck-view.tsx">Deck view</a></td>
+<td>Tier tabs, Collection, reward details, and confirmation controls</td>
+</tr>
+<tr>
+<td><a href="https://github.com/AccelByte/sa-signal-range/blob/main/prototype/app/outpost.css">Outpost styles</a></td>
+<td>Refreshed layout and responsive presentation</td>
+</tr>
+<tr>
+<td><a href="https://github.com/AccelByte/sa-signal-range/tree/main/prototype/public/art/signal-range">Runtime artwork</a></td>
+<td>Outpost backdrop, scout, and equipment atlas</td>
+</tr>
+<tr>
+<td><a href="https://github.com/AccelByte/sa-signal-range/blob/main/prototype/lib/deck.ts">Deck definitions</a></td>
+<td>Rewards, prices, and tier thresholds; also contains separately used mock helpers</td>
+</tr>
+<tr>
+<td><a href="https://github.com/AccelByte/sa-signal-range/blob/main/prototype/lib/ags-deck-config.ts">Public AGS mapping</a></td>
+<td>Environment and catalog item mapping</td>
+</tr>
+<tr>
+<td><a href="https://github.com/AccelByte/sa-signal-range/blob/main/prototype/lib/server/deck-config.ts">Trusted deck configuration</a></td>
+<td>Original deck membership used for attribution</td>
+</tr>
+<tr>
+<td><a href="https://github.com/AccelByte/sa-signal-range/blob/main/prototype/lib/ags-deck-client.ts">Live client adapter</a></td>
+<td>Authoritative reads, purchases, and unresolved-request handling</td>
+</tr>
+<tr>
+<td><a href="https://github.com/AccelByte/sa-signal-range/blob/main/prototype/lib/order-spending.ts">Order validation and accounting</a></td>
+<td>Validated receipts, pagination, deduplication, and total computation</td>
+</tr>
+<tr>
+<td><a href="https://github.com/AccelByte/sa-signal-range/blob/main/prototype/lib/server/reconcile-deck.ts">Backend reconciler</a></td>
+<td>Order-history queries and Statistics MAX publication</td>
+</tr>
+<tr>
+<td><a href="https://github.com/AccelByte/sa-signal-range/blob/main/prototype/lib/server/identity.ts">Identity verification</a></td>
+<td>Verification of protected player requests</td>
+</tr>
+<tr>
+<td><a href="https://github.com/AccelByte/sa-signal-range/blob/main/prototype/lib/starter-grant.ts">Starter-grant coordinator</a></td>
+<td>Separate funding reservation/recovery logic</td>
+</tr>
+</tbody>
+</table></div>
+<p>For a local reproduction, copy <code>.env.example</code> to <code>.env.local</code> and fill in your own namespace, public client ID, and nine <code>NEXT_PUBLIC_AGS_ITEM_*</code> values. The public values are embedded at build time; rebuild after changing them. Defaults in the source are synthetic and use a non-routable example host. Put <code>AGS_BASE_URL</code>, <code>AGS_NAMESPACE</code>, <code>AGS_WORKER_CLIENT_ID</code>, and <code>AGS_WORKER_CLIENT_SECRET</code> in server settings. If retaining automatic funding, configure its D1 binding/migrations as described in the README and optionally set <code>AGS_STARTER_POINTS</code>.</p>
+<p>After runtime configuration, the project checks are:</p>
+<div class="code-block"><div class="code-toolbar"><span class="code-label">Shell</span><button aria-label="Copy code example 10" aria-live="polite" class="copy-code" data-copy="" hidden="" type="button">Copy</button></div><pre aria-label="Shell code example" tabindex="0"><code class="language-sh highlight" id="code-10"><span class="nb">cd</span><span class="w"> </span>prototype
+npm<span class="w"> </span>ci
+npm<span class="w"> </span><span class="nb">test</span>
+npm<span class="w"> </span>run<span class="w"> </span>typecheck
+npm<span class="w"> </span>run<span class="w"> </span>build
+</code></pre></div>
+<p>Configure the AGS catalog and runtime settings, then complete the service acceptance checks in your test namespace.</p>
+<p>For your target engine or another backend language, use the equivalent documented operations from the <a href="https://docs.accelbyte.io/api-explorer/">AGS API Explorer</a>. Preserve the player/service authentication boundary and the validated-order accounting rule when translating the example.</p>
+<section aria-labelledby="build-your-own-choice-based-battle-pass" class="cta"><h2 id="build-your-own-choice-based-battle-pass">Build your own choice-based battle pass</h2>
+<p>Ready to try the same pattern in your game? Register for AGS, create a test namespace, and start with a points wallet, a small reward catalog, and spending-based purchase requirements.</p>
+<p><strong><a class="cta-link" href="https://prod.gamingservices.accelbyte.io/auth/register?utm_source=github&amp;utm_medium=source-code&amp;utm_campaign=sa-content&amp;utm_content=choice-based-battle-pass-tutorial">Register for AccelByte Gaming Services</a></strong></p>
+</section></article>
+<footer class="page-footer">AGS developer tutorial · Choice-based reward progression<br/>
+<a href="https://github.com/AccelByte/sa-signal-range/blob/main/docs/sa-content-studio/content/battle-pass-tutorial.md">Read the Markdown source</a><a class="back-to-top" href="#top">Back to top ↑</a>
+</footer>
+</main>
+</div>
+<script>
+(() => {
+  const toc = document.querySelector('.toc');
+  const narrow = matchMedia('(max-width: 900px)');
+  if (narrow.matches) toc.open = false;
+  narrow.addEventListener('change', event => { toc.open = !event.matches; });
+  document.querySelectorAll('.toc a').forEach(link => link.addEventListener('click', () => {
+    if (narrow.matches) toc.open = false;
+  }));
+  const sections = [...document.querySelectorAll('article h2[id]')];
+  const links = [...document.querySelectorAll('.toc a')];
+  let scrollPending = false;
+  const updateCurrent = () => {
+    scrollPending = false;
+    let current = sections.filter(section => section.getBoundingClientRect().top <= 220).at(-1);
+    if (innerHeight + scrollY >= document.documentElement.scrollHeight - 4) current = sections.at(-1);
+    links.forEach(link => link.setAttribute('aria-current', String(Boolean(current) && link.hash === '#' + current.id)));
+  };
+  addEventListener('scroll', () => {
+    if (!scrollPending) { scrollPending = true; requestAnimationFrame(updateCurrent); }
+  }, { passive: true });
+  updateCurrent();
+  document.querySelectorAll('[data-copy]').forEach(button => {
+    button.hidden = false;
+    button.addEventListener('click', async () => {
+      const code = button.closest('.code-block').querySelector('code').textContent;
+      try {
+        if (navigator.clipboard && window.isSecureContext) await navigator.clipboard.writeText(code);
+        else {
+          const field = document.createElement('textarea');
+          field.value = code; field.style.position = 'fixed'; field.style.left = '-9999px';
+          document.body.append(field); field.select();
+          const copied = document.execCommand('copy'); field.remove();
+          if (!copied) throw new Error('Copy unavailable');
+        }
+        button.textContent = 'Copied';
+      } catch { button.textContent = 'Select code'; }
+      setTimeout(() => { button.textContent = 'Copy'; }, 1800);
+    });
+  });
+  const print = document.querySelector('[data-print]');
+  print.hidden = false;
+  const openForPrint = [];
+  addEventListener('beforeprint', () => {
+    document.querySelectorAll('.config-details:not([open]), .video-demo:not([open])').forEach(details => {
+      openForPrint.push(details); details.open = true;
+    });
+  });
+  addEventListener('afterprint', () => { openForPrint.splice(0).forEach(details => { details.open = false; }); });
+  print.addEventListener('click', () => window.print());
+})();
+</script>
+</body>
+</html>
