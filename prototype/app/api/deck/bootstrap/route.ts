@@ -1,9 +1,10 @@
+import { deckCors } from '@/lib/deck-cors';
 import { IdentityError, verifyPlayer } from '@/lib/server/identity';
 import { fundPlayer } from '@/lib/server/fund-player';
 import { GrantError } from '@/lib/starter-grant';
 
 export const dynamic = 'force-dynamic';
-export async function POST(request: Request) {
+async function handle(request: Request) {
   const headers = { 'Cache-Control': 'no-store', Vary: 'Authorization' };
   try {
     const identity = await verifyPlayer(request);
@@ -13,3 +14,7 @@ export async function POST(request: Request) {
     return Response.json({ error: error instanceof IdentityError || error instanceof GrantError ? error.message : 'Starter points are unavailable. Retry connection.' }, { status: error instanceof IdentityError ? error.status : 503, headers });
   }
 }
+
+const cors = deckCors(['POST']);
+export const OPTIONS = cors.OPTIONS;
+export const POST = cors.wrap(handle);

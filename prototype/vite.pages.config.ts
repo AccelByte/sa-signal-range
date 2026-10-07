@@ -10,6 +10,7 @@ export default defineConfig({
   // The Pages build has no AGS environment or server routes.
   envDir: fileURLToPath(new URL('./static-demo', import.meta.url)),
   base: '/sa-signal-range/',
+  define: { 'process.env': {} },
   publicDir: fileURLToPath(new URL('./public', import.meta.url)),
   resolve: { alias: { '@': appRoot } },
   css: { postcss: { plugins: [tailwindcss()] } },

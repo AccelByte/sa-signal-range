@@ -1,8 +1,8 @@
 # Signal Range battle-pass prototype
 
-**[Play the demo](https://accelbyte.github.io/sa-signal-range/)** · **[Developer tutorial](https://accelbyte.github.io/sa-signal-range/battle-pass-tutorial.html)** · **[Play Live AGS](https://signal-range-deck.workspace-025025.chatgpt.site/)**
+**[Play the demo](https://accelbyte.github.io/sa-signal-range/)** · **[Developer tutorial](https://accelbyte.github.io/sa-signal-range/battle-pass-tutorial.html)**
 
-Choose rewards, spend points, and unlock the next tier. The browser demo starts with 60 local points and saves progress in your browser. Its **Tutorial** button opens the implementation guide; **Live AGS** opens the server-backed game.
+Choose rewards, spend points, and unlock the next tier. The demo connects your player automatically and starts with 180 points. Its **Tutorial** button opens the implementation guide.
 
 The [prototype source](prototype/README.md) contains the current UI, the offline demo, and the AGS implementation. Live mode provides automatic player login and 180 server-granted starter points per player and season. AGS Orders supplies purchase history; Statistics tracks validated spending; D1 coordinates starter grants.
 
@@ -19,7 +19,7 @@ python scripts/build-battle-pass-tutorial.py
 
 ## GitHub Pages
 
-`main` contains editable source. `gh-pages` contains the compiled browser demo, tutorial, and public media. GitHub Pages serves the offline demo; the live AGS game requires a server and runs separately.
+`main` contains editable source. `gh-pages` contains the compiled browser demo, tutorial, and public media. GitHub Pages serves the game UI. Authenticated requests go to the deck backend, which verifies player identity, prepares starter points, and reconciles AGS spending. The player stays on the Pages address.
 
 Build the Pages package from the repository root:
 

@@ -277,7 +277,7 @@ Device ID continuity is a demo convenience. Clearing browser storage can lose th
 
 ### Demo funding versus gameplay earning
 
-The live Site is configured to grant **180 starter points per player and deck**. This makes all nine rewards affordable while still requiring purchases to unlock tiers. It does not implement gameplay-based earning.
+The demo is configured to grant **180 starter points per player and deck**. This makes all nine rewards affordable while still requiring purchases to unlock tiers. It does not implement gameplay-based earning.
 
 The funding route verifies the player, reserves a grant keyed by namespace/deck/player, and credits AGS Wallet. A D1 database stores only starter-grant reservations and completion state. **Purchase spending and purchase history remain in AGS Orders.**
 
@@ -571,7 +571,7 @@ The reusable design is the separation of responsibilities: AGS processes and val
 
 ## 12. Explore the implementation
 
-Use `prototype/` for the current UI, automatic login, and starter grants. The GitHub Pages build uses the same UI with local demo state. Select **Tutorial** in the demo to read this guide, or **Live AGS** to open the server-backed game.
+Use `prototype/` for the current UI, automatic login, and starter grants. The GitHub Pages build connects the same UI to the deck backend. Select **Tutorial** in the demo to read this guide.
 
 | Start here | Purpose |
 | --- | --- |

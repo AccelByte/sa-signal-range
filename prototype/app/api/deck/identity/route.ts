@@ -1,8 +1,9 @@
+import { deckCors } from '@/lib/deck-cors';
 import { IdentityError, verifyPlayer } from '@/lib/server/identity';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET(request: Request) {
+async function handle(request: Request) {
   const headers = { 'Cache-Control': 'no-store', Vary: 'Authorization' };
   try { return Response.json(await verifyPlayer(request), { headers }); }
   catch (error) {
@@ -10,3 +11,7 @@ export async function GET(request: Request) {
       { status: error instanceof IdentityError ? error.status : 503, headers });
   }
 }
+
+const cors = deckCors(['GET']);
+export const OPTIONS = cors.OPTIONS;
+export const GET = cors.wrap(handle);

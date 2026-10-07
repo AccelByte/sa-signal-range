@@ -1,4 +1,4 @@
-import { AGS, DECK_ITEMS } from './ags-deck-config.js';
+import { AGS as DEFAULT_AGS, DECK_ITEMS as DEFAULT_ITEMS } from './ags-deck-config.js';
 import { REWARDS, TIERS, type Reward } from './deck.js';
 import { automaticDeviceId } from './auto-player.js';
 
@@ -19,10 +19,10 @@ class AgsError extends Error {
   constructor(message: string, public status?: number) { super(message); }
 }
 
-async function json<T>(url: string, init: RequestInit, label: string): Promise<T> {
+async function sendJson<T>(url: string, init: RequestInit, label: string, apiBase: string): Promise<T> {
   let response: Response;
   try {
-    response = await fetch(url, { ...init, credentials: url.startsWith('/api/deck/') ? 'same-origin' : 'omit', cache: 'no-store', redirect: 'error', signal: AbortSignal.timeout(url === '/api/deck/reconcile' || url === '/api/deck/bootstrap' ? 45000 : 25000) });
+    response = await fetch(`${apiBase}${url}`, { ...init, credentials: apiBase ? 'omit' : 'same-origin', cache: 'no-store', redirect: 'error', signal: AbortSignal.timeout(url === '/api/deck/reconcile' || url === '/api/deck/bootstrap' ? 45000 : 25000) });
   } catch { throw new AgsError(`${label}: network error or timeout. The outcome may be unknown.`); }
   if (!response.ok) {
     // Never echo upstream payloads: IAM payloads may include tokens or private data.
@@ -32,7 +32,15 @@ async function json<T>(url: string, init: RequestInit, label: string): Promise<T
   catch { throw new AgsError(`${label}: invalid service response.`); }
 }
 
-export function createAgsDeckClient() {
+type Options = { apiBase?: string; config?: typeof DEFAULT_AGS; items?: Record<string, string> };
+
+export function createAgsDeckClient(options: Options = {}) {
+  const AGS = options.config ?? DEFAULT_AGS;
+  const DECK_ITEMS = options.items ?? DEFAULT_ITEMS;
+  const apiBase = (options.apiBase ?? '').replace(/\/$/, '');
+  function json<T>(url: string, init: RequestInit, label: string) {
+    return sendJson<T>(url, init, label, apiBase);
+  }
   let session: Session | null = null;
   let snapshot: LiveDeck | null = null;
   let generation = 0;

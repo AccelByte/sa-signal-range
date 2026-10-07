@@ -1,9 +1,10 @@
+import { deckCors } from '@/lib/deck-cors';
 import { IdentityError, verifyPlayer } from '@/lib/server/identity';
 import { reconcileDeck } from '@/lib/server/reconcile-deck';
 import { ReconcileError } from '@/lib/order-spending';
 
 export const dynamic = 'force-dynamic';
-export async function POST(request: Request) {
+async function handle(request: Request) {
   const headers = { 'Cache-Control': 'no-store', Vary: 'Authorization' };
   try {
     const identity = await verifyPlayer(request);
@@ -17,3 +18,7 @@ export async function POST(request: Request) {
     return Response.json({ error: error instanceof IdentityError || error instanceof ReconcileError ? error.message : 'Progress could not finish. Retry progress; do not repeat the purchase.' }, { status: error instanceof IdentityError ? error.status : error instanceof SyntaxError ? 400 : 503, headers });
   }
 }
+
+const cors = deckCors(['POST']);
+export const OPTIONS = cors.OPTIONS;
+export const POST = cors.wrap(handle);

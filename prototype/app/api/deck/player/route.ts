@@ -1,3 +1,4 @@
+import { deckCors } from '@/lib/deck-cors';
 import { AGS } from '@/lib/ags-deck-config';
 import { allowedPlayerRequest } from '@/lib/player-request';
 import { IdentityError, verifyPlayer } from '@/lib/server/identity';
@@ -28,5 +29,7 @@ async function forward(request: Request) {
     return Response.json({ error: 'Deck operation could not finish.' }, { status: error instanceof IdentityError ? error.status : error instanceof SyntaxError ? 400 : 503, headers });
   }
 }
-export const GET = forward;
-export const POST = forward;
+const cors = deckCors(['GET', 'POST']);
+export const OPTIONS = cors.OPTIONS;
+export const GET = cors.wrap(forward);
+export const POST = cors.wrap(forward);

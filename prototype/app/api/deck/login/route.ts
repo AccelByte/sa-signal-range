@@ -1,7 +1,8 @@
+import { deckCors } from '@/lib/deck-cors';
 import { AGS } from '@/lib/ags-deck-config';
 
 export const dynamic = 'force-dynamic';
-export async function POST(request: Request) {
+async function handle(request: Request) {
   const headers = { 'Cache-Control': 'no-store' };
   try {
     if (request.headers.get('content-type') !== 'application/json') return Response.json({ error: 'JSON required.' }, { status: 415, headers });
@@ -20,3 +21,7 @@ export async function POST(request: Request) {
     return Response.json({ access_token: token.access_token }, { headers });
   } catch { return Response.json({ error: 'Player login is unavailable. Retry connection.' }, { status: 503, headers }); }
 }
+
+const cors = deckCors(['POST']);
+export const OPTIONS = cors.OPTIONS;
+export const POST = cors.wrap(handle);

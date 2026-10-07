@@ -8,11 +8,18 @@ import { createMockDeckClient } from '@/lib/mock-deck-client';
 import { createAgsDeckClient, type LiveDeck } from '@/lib/ags-deck-client';
 
 
-export default function Home() {
+type Props = {
+  liveOptions?: Parameters<typeof createAgsDeckClient>[0];
+  tutorialHref?: string;
+  assetBase?: string;
+  hideModeControls?: boolean;
+};
+
+export default function Home(props: Props = {}) {
   const [client] = useState(() => createMockDeckClient());
   const [mockDeck, setDeck] = useState(() => client.loadState());
   const [mode, setMode] = useState<'live' | 'mock'>('live');
-  const [liveClient] = useState(() => createAgsDeckClient());
+  const [liveClient] = useState(() => createAgsDeckClient(props.liveOptions));
   const [live, setLive] = useState<LiveDeck | null>(null);
   const [busy, setBusy] = useState(false);
   const recovery = useRef({ mode, live, busy, refresh: refreshLive });
@@ -99,7 +106,7 @@ export default function Home() {
         const state = await liveClient.refreshAfterOrder(order);
         if (attempt !== operation.current) return;
         setLive(state); setSelected(null);
-        setMessage(order.status === 'FULFILLED' ? 'Reward fulfilled. Season spending verified by AGS.' : `Order ${order.status}. Retry progress to check again.`);
+        setMessage(order.status === 'FULFILLED' ? 'Reward acquired. Season spending updated.' : `Order ${order.status}. Retry progress to check again.`);
       } catch (error) { if (attempt === operation.current) setMessage(error instanceof Error ? error.message : 'Purchase could not be completed.'); }
       finally { if (attempt === operation.current) setBusy(false); }
       return;
@@ -134,11 +141,12 @@ export default function Home() {
     if (recovery.current.busy) return;
     recovery.current.busy = true;
     const attempt = ++operation.current; setBusy(true);
-    try { const state = await liveClient.load(); if (attempt === operation.current) { setLive(state); setMessage('Wallet, collection and season spending refreshed from AGS.'); } }
+    try { const state = await liveClient.load(); if (attempt === operation.current) { setLive(state); setMessage('Wallet, collection and season spending refreshed.'); } }
     catch (error) { if (attempt === operation.current) setMessage(error instanceof Error ? error.message : 'Refresh failed.'); }
     finally { if (attempt === operation.current) setBusy(false); }
   }
   return <DeckView
+    hideModeControls={props.hideModeControls} tutorialHref={props.tutorialHref} assetBase={props.assetBase}
     deck={deck} rewards={rewards} mode={mode} ready={ready} busy={busy}
     connected={mode === 'mock' || !!live} player={live?.identity.userId}
     message={message} selected={selected} selectedIssue={selectedIssue}
@@ -146,6 +154,6 @@ export default function Home() {
     onSelect={setSelected} onMode={changeMode} onEarn={earn}
     onRefresh={() => void refreshLive()} onBuy={() => void buy()}
     onReset={reset} onResetOpen={setResetOpen}
-    connection={<><p className="eyebrow connection-eyebrow">OUTPOST ACCESS</p><h2>Your next expedition awaits.</h2><p>Your player connects automatically. Starter points cover every reward in the field collection.</p><button className="primary-button" disabled={busy} onClick={() => void connect()}>{busy ? 'Preparing your deck…' : 'Retry connection'}</button><p className="connection-footnote">Use Offline demo below to explore with local demo points.</p></>}
+    connection={<><p className="eyebrow connection-eyebrow">OUTPOST ACCESS</p><h2>Your next expedition awaits.</h2>{!props.hideModeControls && <p>Your player connects automatically. Starter points cover every reward in the field collection.</p>}<button className="primary-button" disabled={busy} onClick={() => void connect()}>{busy ? 'Preparing your deck…' : 'Retry connection'}</button>{!props.hideModeControls && <p className="connection-footnote">Use Offline demo below to explore with local demo points.</p>}</>}
   />;
 }

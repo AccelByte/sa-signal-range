@@ -25,4 +25,6 @@ Copy `.env.example` to ignored `.env.local` and supply your own namespace, publi
 
 ## GitHub Pages demo
 
-Run `npm run build:pages` to build the offline UI into `../dist-pages/`. From the repository root, run `python scripts/package-github-pages.py` to include the tutorial and its screenshots. The **Tutorial** button opens `battle-pass-tutorial.html` on the same site, and **Live AGS** opens the server-backed game. GitHub Pages does not run the API routes or starter-grant coordinator. Editable source stays on `main`; compiled output belongs on `gh-pages`.
+Run `npm run build:pages` to build the game UI into `../dist-pages/`. From the repository root, run `python scripts/package-github-pages.py` to include the tutorial and its screenshots. The game connects automatically, and **Tutorial** opens `battle-pass-tutorial.html` on the same site.
+
+`static-demo/live-game.tsx` retrieves public catalog configuration from `/api/deck/config` and supplies the backend origin to the existing AGS adapter. Backend routes allow the `https://accelbyte.github.io` browser origin through `lib/deck-cors.ts`; player verification and operation allowlists still apply. Tokens stay in memory, cross-origin requests omit cookies, and server credentials remain server-only. Set the API origin and allowed game origin for your own deployment. Editable source stays on `main`; compiled output belongs on `gh-pages`.
