@@ -1,6 +1,6 @@
 # Signal Range battle-pass prototype
 
-**[Play the demo](https://accelbyte.github.io/sa-signal-range/)** · **[Developer tutorial](https://accelbyte.github.io/sa-signal-range/battle-pass-tutorial.html)**
+**[Play the demo](https://accelbyte.github.io/sa-signal-range/)** · **[Developer tutorial](https://accelbyte.github.io/sa-signal-range/battle-pass-tutorial.html)** · **[Register for AGS](https://prod.gamingservices.accelbyte.io/auth/register?utm_source=source-code&utm_medium=github&utm_campaign=sa-content&utm_content=2026-10-19-arc-riders-inspired-prototype)**
 
 Choose rewards, spend points, and unlock the next tier. The demo connects your player automatically and starts with 180 points. Its **Tutorial** button opens the implementation guide.
 

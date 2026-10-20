@@ -609,4 +609,4 @@ For your target engine or another backend language, use the equivalent documente
 
 Ready to try the same pattern in your game? Register for AGS, create a test namespace, and start with a points wallet, a small reward catalog, and spending-based purchase requirements.
 
-**[Register for AccelByte Gaming Services](https://prod.gamingservices.accelbyte.io/auth/register?utm_source=github&utm_medium=source-code&utm_campaign=sa-content&utm_content=choice-based-battle-pass-tutorial)**
+**[Register for AccelByte Gaming Services](https://prod.gamingservices.accelbyte.io/auth/register?utm_source=source-code&utm_medium=github&utm_campaign=sa-content&utm_content=2026-10-19-arc-riders-inspired-prototype)**
